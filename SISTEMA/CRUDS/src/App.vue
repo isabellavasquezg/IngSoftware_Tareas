@@ -4,7 +4,9 @@
     <router-link to="/ListarU">Ver Ubicaciones</router-link>|
     <router-link to="/InsertarU">Crear Ubicaciones</router-link>|
     <router-link to="/ListarR">Ver Responsables</router-link>|
-    <router-link to="/InsertarR">Crear Responsables</router-link>
+    <router-link to="/InsertarR">Crear Responsables</router-link>|
+    <router-link to="/ListarE">Ver Equipos</router-link>|
+    <router-link to="/InsertarE">Crear Equipos</router-link>
 
   </nav>
   <router-view/>

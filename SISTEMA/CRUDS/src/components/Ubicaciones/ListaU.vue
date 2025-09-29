@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     consultarResponsables() {
-      fetch('http://localhost/APIS/ubicaciones/Ubicaciones.php') // 👈 apunta al archivo PHP correcto
+      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php') // 👈 apunta al archivo PHP correcto
         .then(res => res.json())
         .then(data => {
           console.log(data)
