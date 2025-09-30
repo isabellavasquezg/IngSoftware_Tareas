@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     consultarUbicaciones() {
-      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php') // 👈 apunta al archivo PHP correcto
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php') // 👈 apunta al archivo PHP correcto
         .then(res => res.json())
         .then(data => {
           console.log(data)
@@ -64,7 +64,7 @@ export default {
         .catch(err => console.error('Error al cargar ubicaciones:', err))
     },
     borrarUbicacion(id) {
-    fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + id)
+    fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + id)
       .then(res => res.json())
       .then(data => {
         console.log(data)

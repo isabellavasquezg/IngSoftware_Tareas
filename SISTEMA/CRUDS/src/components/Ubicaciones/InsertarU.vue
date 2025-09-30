@@ -48,7 +48,7 @@ export default {
       };
 
       fetch(
-        "http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?insertar=1",
+        "http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?insertar=1",
         {
           method: "POST",
           body: JSON.stringify(datosEnviar)

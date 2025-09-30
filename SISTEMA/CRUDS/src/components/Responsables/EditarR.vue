@@ -51,7 +51,7 @@ export default {
     methods:{
         obtenerResponsable(){
             let idResponsable = this.$route.params.id;
-            fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?consultar='+idResponsable)
+            fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?consultar='+idResponsable)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
@@ -70,7 +70,7 @@ export default {
                 cargo: this.responsable.cargo,
                 telefono: this.responsable.telefono
                 }
-            fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?actualizar=1',{
+            fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?actualizar=1',{
                 method: 'POST',
                 body: JSON.stringify(datosEnviar)
             })

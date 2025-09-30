@@ -49,7 +49,7 @@ export default {
   methods: {
     obtenerEquipo() {
       let idEquipo = this.$route.params.id
-      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?consultar=' + idEquipo)
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?consultar=' + idEquipo)
         .then(res => res.json())
         .then(data => {
           console.log(data)
@@ -67,7 +67,7 @@ export default {
         codigoResponsable: this.equipo.codigoResponsable
       }
 
-      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?actualizar=1', {
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?actualizar=1', {
         method: 'POST',
         body: JSON.stringify(datosEnviar)
       })

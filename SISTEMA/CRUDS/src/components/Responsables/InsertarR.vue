@@ -56,7 +56,7 @@ export default {
                 cargo: this.responsable.cargo,
                 telefono: this.responsable.telefono
             }
-        fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?insertar=1',{
+        fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?insertar=1',{
                 method: 'POST',
                 body: JSON.stringify(datosEnviar),
             })

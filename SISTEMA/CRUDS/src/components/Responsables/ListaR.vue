@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     consultarResponsables() {
-      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php') // 👈 apunta al archivo PHP correcto
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php') // 👈 apunta al archivo PHP correcto
         .then(res => res.json())
         .then(data => {
           console.log(data)
@@ -68,7 +68,7 @@ export default {
         .catch(err => console.error('Error al cargar responsables:', err))
     },
     borrarResponsable(id) {
-      fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?borrar=' + id)
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?borrar=' + id)
         .then(res => res.json())
         .then(data => {
           console.log(data)

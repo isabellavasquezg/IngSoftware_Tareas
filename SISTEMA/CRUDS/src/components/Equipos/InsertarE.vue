@@ -55,7 +55,7 @@ export default {
         codigoResponsable: this.equipo.codigoResponsable
       }
 
-    fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?insertar=1', {
+    fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?insertar=1', {
         method: 'POST',
         body: JSON.stringify(datosEnviar)
     })
