@@ -3,12 +3,12 @@ import HomeView from '../views/HomeView.vue'
 import EditarR from '@/components/Responsables/EditarR.vue'
 import EditarU from '@/components/Ubicaciones/EditarU.vue'
 import EditarE from '@/components/Equipos/EditarE.vue'
-import InsertarR from '@/components/Responsables/InsetarR.vue'
-import InsertarU from '@/components/Ubicaciones/InsetarU.vue'
-import InsertarE from '@/components/Equipos/InsetarE.vue'
-import ListarR from '@/components/Responsables/ListaR.vue'
-import ListarU from '@/components/Ubicaciones/ListaU.vue'
-import ListarE from '@/components/Equipos/ListaE.vue'
+import InsertarR from '@/components/Responsables/InsertarR.vue'
+import InsertarU from '@/components/Ubicaciones/InsertarU.vue'
+import InsertarE from '@/components/Equipos/InsertarE.vue'
+import ListaR from '@/components/Responsables/ListaR.vue'
+import ListaU from '@/components/Ubicaciones/ListaU.vue'
+import ListaE from '@/components/Equipos/ListaE.vue'
 import EliminarR from '@/components/Responsables/EliminarR.vue'
 import EliminarU from '@/components/Ubicaciones/EliminarU.vue'
 import EliminarE from '@/components/Equipos/EliminarE.vue'
@@ -22,64 +22,64 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/EditarU',
-    name: 'EditarU',
+    path: '/editarU',
+    name: 'editarU',
     component: EditarU
   },
   {
-    path: '/InsertarU',
-    name: 'InsertarU',
+    path: '/insertarU',
+    name: 'insertarU',
     component:InsertarU
   },
   {
-    path: '/EliminarU',
-    name: 'EliminarU',
+    path: '/eliminarU',
+    name: 'eliminarU',
     component: EliminarU
   },
   {
-    path: '/ListarU',
-    name: 'ListarU',
-    component: ListarU
+    path: '/listaU',
+    name: 'listaU',
+    component: ListaU
   },
   {
-    path: '/EditarR',
-    name: 'EditarR',
+    path: '/editarR/:id',
+    name: 'editarR',
     component: EditarR
   },
   {
-    path: '/InsertarR',
-    name: 'InsertarR',
+    path: '/insertarR',
+    name: 'insertarR',
     component:InsertarR
   },
   {
-    path: '/EliminarR',
-    name: 'EliminarR',
+    path: '/eliminarR',
+    name: 'eliminarR',
     component: EliminarR
   },
   {
-    path: '/ListarR',
-    name: 'ListarR',
-    component: ListarR
+    path: '/listaR',
+    name: 'listaR',
+    component: ListaR
   },
   {
-    path: '/EditarE',
-    name: 'EditarE',
+    path: '/editarE',
+    name: 'editarE',
     component: EditarE
   },
   {
-    path: '/InsertarE',
-    name: 'InsertarE',
+    path: '/insertarE',
+    name: 'insertarE',
     component:InsertarE
   },
   {
-    path: '/EliminarE',
-    name: 'EliminarE',
+    path: '/eliminarE',
+    name: 'eliminarE',
     component: EliminarE
   },
   {
-    path: '/ListarE',
-    name: 'ListarE',
-    component: ListarE
+    path: '/listaE',
+    name: 'listaE',
+    component: ListaE
   },
 ]
 

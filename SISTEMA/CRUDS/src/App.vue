@@ -1,12 +1,12 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/ListarU">Ver Ubicaciones</router-link>|
-    <router-link to="/InsertarU">Crear Ubicaciones</router-link>|
-    <router-link to="/ListarR">Ver Responsables</router-link>|
-    <router-link to="/InsertarR">Crear Responsables</router-link>|
-    <router-link to="/ListarE">Ver Equipos</router-link>|
-    <router-link to="/InsertarE">Crear Equipos</router-link>
+    <router-link to="/listaU">Ver Ubicaciones</router-link>|
+    <router-link to="/insertarU">Crear Ubicaciones</router-link>|
+    <router-link to="/listaR">Ver Responsables</router-link>|
+    <router-link to="/insertarR">Crear Responsables</router-link>|
+    <router-link to="/listaE">Ver Equipos</router-link>|
+    <router-link to="/insertarE">Crear Equipos</router-link>
 
   </nav>
   <router-view/>

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form v-on:submit.prevent="actualizarResponsable">
+        <form v-on:submit.prevent="agregarResponsable">
             <div class="mb-3">
             <label for="codigoAsignado" class="form-label">Código Asignado</label>
             <input type="text" required class="form-control" id="codigoAsignado" placeholder="Código asignado" v-model="responsable.codigoAsignado">
@@ -45,42 +45,28 @@ export default {
             }
         }
     },
-    created: function() {
-        this.obtenerResponsable();
-    },
-    methods:{
-        obtenerResponsable(){
-            let idResponsable = this.$route.params.id;
-            fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?consultar='+idResponsable)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                this.responsable = data[0];
-            })
-            .catch(err => {console.error(err);});
-          
-        },
-        actualizarResponsable(){
+    methods: {
+        agregarResponsable() {
+            console.log(this.responsable)
             let datosEnviar={
-                id: this.responsable.id,
                 codigoAsignado: this.responsable.codigoAsignado,
                 documentoIdentidad: this.responsable.documentoIdentidad,
                 nombre: this.responsable.nombre,
                 apellido: this.responsable.apellido,
                 cargo: this.responsable.cargo,
                 telefono: this.responsable.telefono
-                }
-            fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?actualizar=1',{
+            }
+        fetch('http://localhost/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?insertar=1',{
                 method: 'POST',
-                body: JSON.stringify(datosEnviar)
+                body: JSON.stringify(datosEnviar),
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                window.location.href = '../listaR';
+                console.log(data)
+                alert('Responsable agregado')
+                window.location.href = 'ListaR'
             })
         }
-
-    }      
+    }  
 }
 </script>
