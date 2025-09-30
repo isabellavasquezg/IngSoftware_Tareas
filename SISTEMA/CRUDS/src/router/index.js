@@ -20,7 +20,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/editarU',
+    path: '/editarU/:id',
     name: 'editarU',
     component: EditarU
   },
@@ -50,7 +50,7 @@ const routes = [
     component: ListaR
   },
   {
-    path: '/editarE',
+    path: '/editarE/:id',
     name: 'editarE',
     component: EditarE
   },

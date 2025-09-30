@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 28-09-2025 a las 15:53:43
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Sep 30, 2025 at 05:45 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sgt`
+-- Database: `sgt`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `contraseñas`
+-- Table structure for table `contraseñas`
 --
 
 CREATE TABLE `contraseñas` (
@@ -34,7 +34,7 @@ CREATE TABLE `contraseñas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `contraseñas`
+-- Dumping data for table `contraseñas`
 --
 
 INSERT INTO `contraseñas` (`id`, `usuario`, `contraseña`) VALUES
@@ -45,23 +45,23 @@ INSERT INTO `contraseñas` (`id`, `usuario`, `contraseña`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `equipos`
+-- Table structure for table `equipos`
 --
 
 CREATE TABLE `equipos` (
   `id` int(3) NOT NULL,
-  `numero activo` varchar(20) NOT NULL,
+  `numeroActivo` varchar(20) NOT NULL,
   `marca` varchar(50) NOT NULL,
   `modelo` varchar(50) NOT NULL,
-  `codigo ubicacion` varchar(50) NOT NULL,
-  `codigo responsable` varchar(50) NOT NULL
+  `codigoUbicacion` varchar(50) NOT NULL,
+  `codigoResponsable` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `equipos`
+-- Dumping data for table `equipos`
 --
 
-INSERT INTO `equipos` (`id`, `numero activo`, `marca`, `modelo`, `codigo ubicacion`, `codigo responsable`) VALUES
+INSERT INTO `equipos` (`id`, `numeroActivo`, `marca`, `modelo`, `codigoUbicacion`, `codigoResponsable`) VALUES
 (1, 'EQ101', 'Philips', 'IntelliVue MX450', 'U101', 'R101'),
 (2, 'EQ102', 'GE', 'CARESCAPE V100', 'U102', 'R103'),
 (3, 'EQ103', 'Dräger', 'Evita Infinity', 'U104', 'R102'),
@@ -78,19 +78,18 @@ INSERT INTO `equipos` (`id`, `numero activo`, `marca`, `modelo`, `codigo ubicaci
 (14, 'EQ114', 'Welch Allyn', 'Connex Spot', 'U115', 'R114'),
 (15, 'EQ115', 'Roche', 'Cobas e411', 'U109', 'R115'),
 (16, 'EQ116', 'EQ116', 'Sigma Spectrum', 'U116', 'R116'),
-(17, 'EQ117', 'Philips', 'Affiniti 50', 'U117', 'R117'),
-(18, 'EQ118', 'GE', 'LOGIQ F8', 'U118', 'R118');
+(17, 'EQ117', 'Philips', 'Affiniti 50', 'U117', 'R117');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `responsables`
+-- Table structure for table `responsables`
 --
 
 CREATE TABLE `responsables` (
   `id` int(3) NOT NULL,
-  `codigo asignado` varchar(20) NOT NULL,
-  `documento de identidad` varchar(20) NOT NULL,
+  `codigoAsignado` varchar(20) NOT NULL,
+  `documentoIdentidad` varchar(20) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `cargo` varchar(50) NOT NULL,
@@ -98,10 +97,10 @@ CREATE TABLE `responsables` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `responsables`
+-- Dumping data for table `responsables`
 --
 
-INSERT INTO `responsables` (`id`, `codigo asignado`, `documento de identidad`, `nombre`, `apellido`, `cargo`, `telefono`) VALUES
+INSERT INTO `responsables` (`id`, `codigoAsignado`, `documentoIdentidad`, `nombre`, `apellido`, `cargo`, `telefono`) VALUES
 (1, 'R101', '1023456789', 'Juan', 'Pérez Gómez', 'Médico Especialista', '3102001'),
 (2, 'R102', '9876543210', 'María', 'Torres López', 'Enfermera Jefe', '3102002'),
 (3, 'R103', '1122334455', 'Andrés', 'Ramírez Díaz', 'Auxiliar de Enfermería', '3102003'),
@@ -117,14 +116,12 @@ INSERT INTO `responsables` (`id`, `codigo asignado`, `documento de identidad`, `
 (13, 'R113', '1213141516', 'Ricardo', 'Pineda Silva', 'Técnico de Mantenimiento', '3102013'),
 (14, 'R114', '1314151617', 'Valentina', 'Ortiz León', 'Especialista en Oncología', '3102014'),
 (15, 'R115', '1001132918', 'Kevin', 'García Jaramillo', 'Ingeniero Biomedico', '3102015'),
-(16, 'R116', '1001686081', 'Dairon', 'Montes Barrada', 'Ingeniero Biomedico', '3102016'),
-(17, 'R117', '1000438341', 'Isabella', 'Vásquez García', 'Ingeniera Biomédica', '3102017'),
-(18, 'R118', '1718192021', 'Gabriela', 'Castro Pardo', 'Jefe de UCI Pediátrica', '3102018');
+(16, 'R116', '1001686081', 'Dairon', 'Montes Barrada', 'Ingeniero Biomedico', '3102016');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ubicaciones`
+-- Table structure for table `ubicaciones`
 --
 
 CREATE TABLE `ubicaciones` (
@@ -136,7 +133,7 @@ CREATE TABLE `ubicaciones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `ubicaciones`
+-- Dumping data for table `ubicaciones`
 --
 
 INSERT INTO `ubicaciones` (`id`, `codigoAsignado`, `nombre`, `ubicacion`, `telefono`) VALUES
@@ -155,65 +152,63 @@ INSERT INTO `ubicaciones` (`id`, `codigoAsignado`, `nombre`, `ubicacion`, `telef
 (13, 'U113', 'Sala de Recuperación', 'Piso 2, ala central', '3001013'),
 (14, 'U114', 'Consulta Externa', 'Piso 3, ala oeste', '3001014'),
 (15, 'U115', 'Ginecología y Obstetricia', 'Piso 3, ala central', '3001015'),
-(16, 'U116', 'Cardiología', 'Piso 3, ala sur', '3001016'),
-(17, 'U117', 'Oncología', 'Piso 4, ala norte', '3001017'),
-(18, 'U118', 'Medicina Interna', 'Piso 4, ala este', '3001018');
+(16, 'U116', 'Cardiología', 'Piso 3, ala sur', '3001016');
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `contraseñas`
+-- Indexes for table `contraseñas`
 --
 ALTER TABLE `contraseñas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `equipos`
+-- Indexes for table `equipos`
 --
 ALTER TABLE `equipos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `responsables`
+-- Indexes for table `responsables`
 --
 ALTER TABLE `responsables`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `ubicaciones`
+-- Indexes for table `ubicaciones`
 --
 ALTER TABLE `ubicaciones`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `contraseñas`
+-- AUTO_INCREMENT for table `contraseñas`
 --
 ALTER TABLE `contraseñas`
   MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `equipos`
+-- AUTO_INCREMENT for table `equipos`
 --
 ALTER TABLE `equipos`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT de la tabla `responsables`
+-- AUTO_INCREMENT for table `responsables`
 --
 ALTER TABLE `responsables`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT de la tabla `ubicaciones`
+-- AUTO_INCREMENT for table `ubicaciones`
 --
 ALTER TABLE `ubicaciones`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
