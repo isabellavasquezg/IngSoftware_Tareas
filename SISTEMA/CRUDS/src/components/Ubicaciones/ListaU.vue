@@ -24,7 +24,7 @@
                 <td>{{ ubicacion.telefono }}</td>
                 <td>
                   <div class="btn-group" role="group" aria-label="Grupo básico">
-                    <button type="button" class="btn btn-warning">Editar</button>
+                    <router-link :to="{name:'editarU', params:{id:ubicacion.id}}" class="btn btn-warning">Editar</router-link>
                     <button type="button" v-on:click="borrarUbicacion(ubicacion.id)" class="btn btn-danger">Eliminar</button>
                   </div>
                 </td>
