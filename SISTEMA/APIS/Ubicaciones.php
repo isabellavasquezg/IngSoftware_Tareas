@@ -94,7 +94,6 @@ if (isset($_GET["insertar"])) {
 }
 
 
-
 /* Actualiza todos los campos de la tabla ubiaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["actualizar"]
    */
@@ -105,10 +104,9 @@ if(isset($_GET["actualizar"])){
     $nombre=$data->nombre;
     $ubicacion=$data->ubicacion; 
     $telefono=$data->telefono; 
-	$sqlUbicaciones = mysqli_query($conexionBD,"UPDATE ubicaciones SET  codigoAsignadi='$codigoAsignado',nombre='$nombre',ubicacion='$ubicacion', telefono='$telefono' WHERE id='$id'");
-	echo json_encode(["success"=>1 ]);
-	exit();
-    
+	$sqlUbicaciones = mysqli_query($conexionBD,"UPDATE ubicaciones SET  codigoAsignado='$codigoAsignado',nombre='$nombre',ubicacion='$ubicacion', telefono='$telefono' WHERE id='$id'");
+	echo json_encode(["success"=>1]);
+	exit();   
 }
 
 /*

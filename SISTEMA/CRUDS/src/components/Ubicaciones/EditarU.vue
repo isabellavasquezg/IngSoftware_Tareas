@@ -65,7 +65,7 @@ export default {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                window.location.href = '../ListaU';
+                window.location.href = '../listaU';
             })
         }
 
