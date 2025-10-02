@@ -25,7 +25,7 @@ $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
    la variable 'id' que viene en el $_GET["consultar"] 
    */
 if (isset($_GET["consultar"])){
-        $sqlContraseñas = mysqli_query($conexionBD,"SELECT * FROM contraseñas WHERE id=".$_GET["consultar"]);
+        $sqlContraseñas = mysqli_query($conexionBD,"SELECT * FROM usuarios WHERE id=".$_GET["consultar"]);
         if(mysqli_num_rows($sqlContraseñas) > 0){
             $contraseña = mysqli_fetch_all($sqlContraseñas,MYSQLI_ASSOC);
             echo json_encode($sqlContraseñas); 
@@ -39,7 +39,7 @@ if (isset($_GET["consultar"])){
 
    if (isset($_GET["consultarContraseña"])) {
     $contraseña= $_GET["consultarContraseña"];
-    $sqlContraseñas = mysqli_query($conexionBD, "SELECT * FROM contraseñas WHERE documento='$contraseña'");
+    $sqlContraseñas = mysqli_query($conexionBD, "SELECT * FROM usuarios WHERE documento='$contraseña'");
 
     if (mysqli_num_rows($sqlContraseñas) > 0) {
         $contraseña = mysqli_fetch_assoc($sqlContraseñas);
@@ -56,7 +56,7 @@ if (isset($_GET["consultar"])){
 if (isset($_GET["borrar"])) {
     header('Content-Type: application/json; charset=utf-8'); // 👈 fuerza JSON
     $contraseña = intval($_GET["borrar"]);
-    $sqlContraseñas = mysqli_query($conexionBD, "DELETE FROM contraseñas WHERE contraseña=$contraseña");
+    $sqlContraseñas = mysqli_query($conexionBD, "DELETE FROM usuarios WHERE contraseña=$contraseña");
     if ($sqlContraseñas) {
         echo json_encode(["success" => 1]);
     } else {
@@ -95,7 +95,7 @@ if(isset($_GET["actualizar"])){
     $id=(isset($data->contraseña))?$data->contraseña:$_GET["actualizar"];
     $contraseña=$data->contraseña;
     $usuario=$data->usuario;
-	$sqlContraseñas = mysqli_query($conexionBD,"UPDATE contraseñas SET  contraseña='$contraseña',usuario='$contraseña', WHERE id='$id'");
+	$sqlContraseñas = mysqli_query($conexionBD,"UPDATE usuarios SET  contraseña='$contraseña',usuario='$contraseña', WHERE id='$id'");
 	echo json_encode(["success"=>1 ]);
 	exit();
     
@@ -104,7 +104,7 @@ if(isset($_GET["actualizar"])){
 /*
 	Muestra todos los registros almacenados en la tabla contraseñas, usando la URL raíz.
 */
-$sqlContraseñas = mysqli_query($conexionBD,"SELECT * FROM contraseñas ");
+$sqlContraseñas = mysqli_query($conexionBD,"SELECT * FROM usuarios ");
 if(mysqli_num_rows($sqlContraseñas_) > 0){
     $Contraseñas_ = mysqli_fetch_all($sqlContraseñas_,MYSQLI_ASSOC);
     echo json_encode($Contraseñas_);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2025 at 05:45 PM
+-- Generation Time: Oct 02, 2025 at 08:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,61 +24,43 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contraseñas`
+-- Table structure for table `equipos_medicos`
 --
 
-CREATE TABLE `contraseñas` (
-  `id` int(3) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
-  `contraseña` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `contraseñas`
---
-
-INSERT INTO `contraseñas` (`id`, `usuario`, `contraseña`) VALUES
-(1, 'kevin.garciaj', '1001132918'),
-(2, 'dairon.montes', '1001686081'),
-(3, 'isabella.vasquezg', '1000438341');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `equipos`
---
-
-CREATE TABLE `equipos` (
+CREATE TABLE `equipos_medicos` (
   `id` int(3) NOT NULL,
   `numeroActivo` varchar(20) NOT NULL,
   `marca` varchar(50) NOT NULL,
   `modelo` varchar(50) NOT NULL,
-  `codigoUbicacion` varchar(50) NOT NULL,
-  `codigoResponsable` varchar(50) NOT NULL
+  `codigoUbicacion` varchar(20) NOT NULL,
+  `codigoResponsable` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `equipos`
+-- Dumping data for table `equipos_medicos`
 --
 
-INSERT INTO `equipos` (`id`, `numeroActivo`, `marca`, `modelo`, `codigoUbicacion`, `codigoResponsable`) VALUES
-(1, 'EQ101', 'Philips', 'IntelliVue MX450', 'U101', 'R101'),
-(2, 'EQ102', 'GE', 'CARESCAPE V100', 'U102', 'R103'),
-(3, 'EQ103', 'Dräger', 'Evita Infinity', 'U104', 'R102'),
-(4, 'EQ104', 'Mindray', 'BeneHeart D6', 'U103', 'R105'),
-(5, 'EQ105', 'Siemens', 'SOMATOM Go Now', 'U107', 'R104'),
-(6, 'EQ106', 'Philips', 'Ingenia 1.5T', 'U108', 'R106'),
-(7, 'EQ107', 'Beckman', 'AU480 Analyzer', 'U109', 'R107'),
-(8, 'EQ108', 'Terumo', 'Sarns 8000', 'U105', 'R108'),
-(9, 'EQ109', 'Olympus', 'CV-150', 'U110', 'R109'),
-(10, 'EQ110', 'Fresenius', '4008S', 'U112', 'R110'),
-(11, 'EQ111', 'EQ111', 'Carescape B650', 'U113', 'R111'),
-(12, 'EQ112', 'Philips', 'SureSigns VS3', 'U114', 'R112'),
-(13, 'EQ113', 'Dräger', 'Fabius Plus', 'U106', 'R113'),
-(14, 'EQ114', 'Welch Allyn', 'Connex Spot', 'U115', 'R114'),
-(15, 'EQ115', 'Roche', 'Cobas e411', 'U109', 'R115'),
-(16, 'EQ116', 'EQ116', 'Sigma Spectrum', 'U116', 'R116'),
-(17, 'EQ117', 'Philips', 'Affiniti 50', 'U117', 'R117');
+INSERT INTO `equipos_medicos` (`id`, `numeroActivo`, `marca`, `modelo`, `codigoUbicacion`, `codigoResponsable`) VALUES
+(2, 'EQA002', 'GE Healthcare', 'LOGIQ E9 (Ultrasonido)', 'U006', 'R003'),
+(3, 'EQA003', 'Dräger', 'Ventilador Savina 300', 'U003', 'R013'),
+(4, 'EQA004', 'Medtronic', 'Defibrillator Lifepak 20', 'U001', 'R005'),
+(5, 'EQA005', 'Siemens', 'Aera 1.5T (Resonancia)', 'U006', 'R003'),
+(6, 'EQA006', 'Zoll', 'ECG E-Series', 'U001', 'R017'),
+(7, 'EQA007', 'Stryker', 'Mesa Quirúrgica 5085', 'U002', 'R015'),
+(8, 'EQA008', 'Baxter', 'Bomba de Infusión Sigma', 'U004', 'R008'),
+(9, 'EQA009', 'Olympus', 'Endoscopio CV-190', 'U011', 'R011'),
+(10, 'EQA010', 'Mindray', 'Monitor BeneVision N1', 'U016', 'R006'),
+(11, 'EQA011', 'Fresenius', 'Máquina de Diálisis 5008', 'U013', 'R007'),
+(12, 'EQA012', 'B. Braun', 'Bomba de Infusión Space', 'U010', 'R010'),
+(13, 'EQA013', 'Toshiba', 'Aquilion One (TAC)', 'U006', 'R009'),
+(14, 'EQA014', 'Welch Allyn', 'Monitor de Signos Vitales', 'U009', 'R012'),
+(15, 'EQA015', 'GE Healthcare', 'Máquina de Anestesia', 'U002', 'R021'),
+(16, 'EQA016', 'Abbott', 'Sistema de Análisis i-STAT', 'U005', 'R016'),
+(17, 'EQA017', 'Vyaire', 'Ventilador Bellavista', 'U016', 'R014'),
+(18, 'EQA018', 'Karl Storz', 'Equipo Laparoscópico', 'U002', 'R015'),
+(19, 'EQA019', 'Philips', 'TC Brilliance 64', 'U006', 'R019'),
+(20, 'EQA020', 'Dräger', 'Incubadora Isolette 8000', 'U016', 'R006'),
+(61, 'EQA118', 'pepito', 'pettt', 'U002', 'R021');
 
 -- --------------------------------------------------------
 
@@ -101,22 +83,25 @@ CREATE TABLE `responsables` (
 --
 
 INSERT INTO `responsables` (`id`, `codigoAsignado`, `documentoIdentidad`, `nombre`, `apellido`, `cargo`, `telefono`) VALUES
-(1, 'R101', '1023456789', 'Juan', 'Pérez Gómez', 'Médico Especialista', '3102001'),
-(2, 'R102', '9876543210', 'María', 'Torres López', 'Enfermera Jefe', '3102002'),
-(3, 'R103', '1122334455', 'Andrés', 'Ramírez Díaz', 'Auxiliar de Enfermería', '3102003'),
-(4, 'R104', '2233445566', 'Laura', 'Gutiérrez Ruiz', 'Ingeniera Biomédica', '3102005'),
-(5, 'R105', '3344556677', 'Carlos', 'Rodríguez Peña', 'Técnico Biomédico', '3102005'),
-(6, 'R106', '4455667788', 'Diana', 'Morales Salazar', 'Especialista en Pediatría', '3102006'),
-(7, 'R107', '5566778899', 'Jorge', 'Castillo Vargas', 'Neuro Cirujano', '3102007'),
-(8, 'R108', '6677889900', 'Sofía', 'Mendoza Torres', 'Enfermera Auxiliar', '3102008'),
-(9, 'R109', '7788990011', 'Felipe', 'Herrera Castaño', 'Radiólogo', '3102009'),
-(10, 'R110', '8899001122', 'Camila', 'Sánchez Mora', 'Radióloga', '3102010'),
-(11, 'R111', '9900112233', 'Luis', 'Martínez Ríos', 'Director Médico', '3102011'),
-(12, 'R112', '1011122233', 'Natalia', 'Jiménez Reyes', 'Auxiliar de Laboratorio', '3102012'),
-(13, 'R113', '1213141516', 'Ricardo', 'Pineda Silva', 'Técnico de Mantenimiento', '3102013'),
-(14, 'R114', '1314151617', 'Valentina', 'Ortiz León', 'Especialista en Oncología', '3102014'),
-(15, 'R115', '1001132918', 'Kevin', 'García Jaramillo', 'Ingeniero Biomedico', '3102015'),
-(16, 'R116', '1001686081', 'Dairon', 'Montes Barrada', 'Ingeniero Biomedico', '3102016');
+(1, 'R021', '1001', 'Laura', 'Gómez', 'Enfermera Jefe', '3001112233'),
+(2, 'R002', '1002', 'Carlos', 'Pérez', 'Técnico Radiología', '3002223344'),
+(3, 'R003', '1003', 'Ana', 'Díaz', 'Especialista Tomografía', '3003334455'),
+(5, 'R005', '1005', 'Sofía', 'Martínez', 'Paramédico Urgencias', '3005556677'),
+(6, 'R006', '1006', 'Andrés', 'Hernández', 'Enfermero Neonatal', '3006667788'),
+(7, 'R007', '1007', 'Valentina', 'López', 'Auxiliar Mantenimiento', '3007778899'),
+(8, 'R008', '1008', 'Felipe', 'Ruiz', 'Enfermero Pediatría', '3008889900'),
+(9, 'R009', '1009', 'Camila', 'Silva', 'Técnico Imagenología', '3009990011'),
+(10, 'R010', '1010', 'Ricardo', 'Mora', 'Auxiliar de Enfermería', '3000001122'),
+(11, 'R011', '1011', 'María', 'Castro', 'Especialista Endoscopia', '3001110001'),
+(12, 'R012', '1012', 'Diego', 'Rojas', 'Médico Consulta Externa', '3002220002'),
+(13, 'R013', '1013', 'Sara', 'Vargas', 'Terapeuta Respiratoria', '3003330003'),
+(14, 'R014', '1014', 'Luis', 'García', 'Enfermero Jefe UCI', '3004440004'),
+(15, 'R015', '1015', 'Elena', 'Torres', 'Cirujana', '3005550005'),
+(16, 'R016', '1016', 'Javier', 'Pardo', 'Químico Laboratorio', '3006660006'),
+(17, 'R017', '1017', 'Natalia', 'Blanco', 'Jefe de Urgencias', '3007770007'),
+(18, 'R018', '1018', 'Pablo', 'Méndez', 'Técnico Ultrasonido', '3008880008'),
+(19, 'R019', '1019', 'Isabella', 'Cruz', 'Radióloga', '3009990009'),
+(20, 'R020', '1020', 'Gabriel', 'Núñez', 'Ginecólogo', '3000000010');
 
 -- --------------------------------------------------------
 
@@ -137,49 +122,79 @@ CREATE TABLE `ubicaciones` (
 --
 
 INSERT INTO `ubicaciones` (`id`, `codigoAsignado`, `nombre`, `ubicacion`, `telefono`) VALUES
-(1, 'U101', 'Urgencias', 'Piso 1, ala principal', '3001001'),
-(2, 'U102', 'Pediatría', 'Piso 3, ala norte', '3001002'),
-(3, 'U103', 'UCI Adultos', 'Piso 2, ala este', '3001003'),
-(4, 'U104', 'UCI Neonatal', 'Piso 3, ala este', '3001004'),
-(5, 'U105', 'Quirófano 1', 'Piso 2, bloque quirúrgico', '3001005'),
-(6, 'U106', 'Quirófano 2', 'Piso 2, bloque quirúrgico', '3001006'),
-(7, 'U107', 'Imagenología (Rayos X)', 'Piso 1, ala sur', '3001007'),
-(8, 'U108', 'Imagenología (Resonancia Magnética)', 'Piso 1, ala sur', '3001008'),
-(9, 'U109', 'Laboratorio Clínico', 'Piso 1, ala oeste', '3001009'),
-(10, 'U110', 'Banco de Sangre', 'Piso 1, ala oeste', '3001010'),
-(11, 'U111', 'Farmacia', 'Piso 1, ala norte', '3001011'),
-(12, 'U112', 'Central de Esterilización', 'Piso 2, ala oeste', '3001012'),
-(13, 'U113', 'Sala de Recuperación', 'Piso 2, ala central', '3001013'),
-(14, 'U114', 'Consulta Externa', 'Piso 3, ala oeste', '3001014'),
-(15, 'U115', 'Ginecología y Obstetricia', 'Piso 3, ala central', '3001015'),
-(16, 'U116', 'Cardiología', 'Piso 3, ala sur', '3001016');
+(1, 'U001', 'Emergencia', 'Shock Trauma', '3001118801'),
+(2, 'U002', 'Cirugía', 'Quirófano Central 1', '3001118802'),
+(3, 'U003', 'UCI Adultos', 'Cubículo 5', '3001118803'),
+(4, 'U004', 'Pediatría', 'Sala de Observación', '3001118804'),
+(5, 'U005', 'Laboratorio', 'Toma de Muestras', '3001118805'),
+(6, 'U006', 'Imagenología', 'Resonancia Magnética 1', '3001118806'),
+(7, 'U007', 'Farmacia', 'Almacén de Biológicos', '3001118807'),
+(8, 'U008', 'Mantenimiento', 'Taller Biomédico', '3001118808'),
+(9, 'U009', 'Consulta Externa', 'Consultorio 305', '3001118809'),
+(10, 'U010', 'Fisioterapia', 'Gimnasio de Rehabilitación', '3001118810'),
+(11, 'U011', 'Ginecología', 'Sala de Partos 2', '3001118811'),
+(12, 'U012', 'Cardiología', 'Unidad de Cuidados Coronarios', '3001118812'),
+(13, 'U013', 'Hemodiálisis', 'Puesto 12', '3001118813'),
+(14, 'U014', 'Esterilización', 'Área de lavado', '3001118814'),
+(15, 'U015', 'Almacén General', 'Nivel -1 Bodega C', '3001118815'),
+(16, 'U016', 'UCI Neonatal', 'Incubadoras 1-5', '3001118816'),
+(17, 'U017', 'Oncología', 'Sala de Quimioterapia 2', '3001118817'),
+(18, 'U018', 'Oftalmología', 'Sala de Cirugía Menor', '3001118818'),
+(19, 'U019', 'Nutrición', 'Cocina Principal', '3001118819'),
+(20, 'U020', 'Trasplantes', 'Unidad Aislada 3', '3001118820');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(3) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `contraseña` varchar(70) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `usuario`, `contraseña`) VALUES
+(1, 'kevin.garciaj', 'eb1dd2a33169a70c1b5c29f5c15d7c3e7c72660e395d6f27c35366e13d42cdeb'),
+(2, 'dairon.montes', 'a6e4e3fa455c4a8dd84df3f44098a8d85524dbc96130f033c4bb106c8dd1dfb7');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `contraseñas`
+-- Indexes for table `equipos_medicos`
 --
-ALTER TABLE `contraseñas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `equipos`
---
-ALTER TABLE `equipos`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `equipos_medicos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `numeroActivo` (`numeroActivo`),
+  ADD KEY `equipos_medicos_codigoAsignado_responsables` (`codigoResponsable`),
+  ADD KEY `equipos_medicos_codigoAsignado_ubicaciones` (`codigoUbicacion`);
 
 --
 -- Indexes for table `responsables`
 --
 ALTER TABLE `responsables`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigoAsignado` (`codigoAsignado`),
+  ADD UNIQUE KEY `codigoAsignado_2` (`codigoAsignado`);
 
 --
 -- Indexes for table `ubicaciones`
 --
 ALTER TABLE `ubicaciones`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigoAsignado` (`codigoAsignado`);
+
+--
+-- Indexes for table `usuarios`
+--
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -187,28 +202,39 @@ ALTER TABLE `ubicaciones`
 --
 
 --
--- AUTO_INCREMENT for table `contraseñas`
+-- AUTO_INCREMENT for table `equipos_medicos`
 --
-ALTER TABLE `contraseñas`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `equipos`
---
-ALTER TABLE `equipos`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+ALTER TABLE `equipos_medicos`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `responsables`
 --
 ALTER TABLE `responsables`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `ubicaciones`
 --
 ALTER TABLE `ubicaciones`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `equipos_medicos`
+--
+ALTER TABLE `equipos_medicos`
+  ADD CONSTRAINT `equipos_medicos_codigoAsignado_responsables` FOREIGN KEY (`codigoResponsable`) REFERENCES `responsables` (`codigoAsignado`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `equipos_medicos_codigoAsignado_ubicaciones` FOREIGN KEY (`codigoUbicacion`) REFERENCES `ubicaciones` (`codigoAsignado`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

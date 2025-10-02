@@ -1,6 +1,6 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
+  <nav v-if="!isLoginPage">
+    <router-link to="/home">Home</router-link> |
     <router-link to="/listaU">Ver Ubicaciones</router-link>|
     <router-link to="/insertarU">Crear Ubicaciones</router-link>|
     <router-link to="/listaR">Ver Responsables</router-link>|
@@ -11,6 +11,16 @@
   </nav>
   <router-view/>
 </template>
+
+<script>
+export default {
+  computed: {
+    isLoginPage() {
+      return this.$route.name === 'login'; 
+    }
+  },
+};
+</script>
 
 <style>
 #app {

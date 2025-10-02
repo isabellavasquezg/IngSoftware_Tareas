@@ -9,13 +9,22 @@ import InsertarE from '@/components/Equipos/InsertarE.vue'
 import ListaR from '@/components/Responsables/ListaR.vue'
 import ListaU from '@/components/Ubicaciones/ListaU.vue'
 import ListaE from '@/components/Equipos/ListaE.vue'
-
+import LoginGeneral from '@/components/LoginGeneral.vue'
 
 
 
 const routes = [
   {
     path: '/',
+    name: 'login',
+    component: LoginGeneral,
+    meta: {
+      hideNavbar: true 
+    }
+  },
+
+  {
+    path: '/home',
     name: 'home',
     component: HomeView
   },

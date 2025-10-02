@@ -25,7 +25,7 @@ $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
    la variable 'id' que viene en el $_GET["consultar"] 
    */
 if (isset($_GET["consultar"])){
-        $sqlEquipos = mysqli_query($conexionBD,"SELECT * FROM equipos WHERE id=".$_GET["consultar"]);
+        $sqlEquipos = mysqli_query($conexionBD,"SELECT * FROM equipos_medicos WHERE id=".$_GET["consultar"]);
         if(mysqli_num_rows($sqlEquipos) > 0){
             $equipos = mysqli_fetch_all($sqlEquipos,MYSQLI_ASSOC);
             echo json_encode($equipos); 
@@ -39,7 +39,7 @@ if (isset($_GET["consultar"])){
 
    if (isset($_GET["consultarCodigoAsignadoR"])) {
     $codigoAsignado= $_GET["consultarCodigoAsignadoR"];
-    $sqlEquipos = mysqli_query($conexionBD, "SELECT * FROM equipos WHERE documento='$codigoAsignado'");
+    $sqlEquipos = mysqli_query($conexionBD, "SELECT * FROM equipequipos_medicosos WHERE documento='$codigoAsignado'");
 
     if (mysqli_num_rows($sqlEquipos) > 0) {
         $paciente = mysqli_fetch_assoc($sqlEquipos);
@@ -56,7 +56,7 @@ if (isset($_GET["consultar"])){
 if (isset($_GET["borrar"])) {
     header('Content-Type: application/json; charset=utf-8'); // 👈 fuerza JSON
     $id = intval($_GET["borrar"]);
-    $sqlEquipos = mysqli_query($conexionBD, "DELETE FROM equipos WHERE id=$id");
+    $sqlEquipos = mysqli_query($conexionBD, "DELETE FROM equipos_medicos WHERE id=$id");
     if ($sqlEquipos) {
         echo json_encode(["success" => 1]);
     } else {
@@ -77,7 +77,7 @@ if(isset($_GET["insertar"])){
     if($numeroActivo!="" && $marca!="" && $modelo!="" && $codigoUbicacion!="" && $codigoResponsable!=""){        
         $sql = mysqli_query(
             $conexionBD,
-            "INSERT INTO equipos(numeroActivo, marca, modelo, codigoUbicacion, codigoResponsable) 
+            "INSERT INTO equipos_medicos(numeroActivo, marca, modelo, codigoUbicacion, codigoResponsable) 
              VALUES('$numeroActivo','$marca','$modelo','$codigoUbicacion','$codigoResponsable')"
         );
 
@@ -105,7 +105,7 @@ if(isset($_GET["actualizar"])){
 
     $sql = mysqli_query(
         $conexionBD,
-        "UPDATE equipos 
+        "UPDATE equipos_medicos 
          SET numeroActivo='$numeroActivo', marca='$marca', modelo='$modelo', 
              codigoUbicacion='$codigoUbicacion', codigoResponsable='$codigoResponsable' 
          WHERE id='$id'"
@@ -120,7 +120,7 @@ if(isset($_GET["actualizar"])){
 }
 
 /* Mostrar todos los registros */
-$sql = mysqli_query($conexionBD,"SELECT * FROM equipos");
+$sql = mysqli_query($conexionBD,"SELECT * FROM equipos_medicos");
 if(mysqli_num_rows($sql) > 0){
     $activos = mysqli_fetch_all($sql,MYSQLI_ASSOC);
     echo json_encode($activos);
