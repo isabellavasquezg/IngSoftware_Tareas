@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import EditarR from '@/components/Responsables/EditarR.vue'
 import EditarU from '@/components/Ubicaciones/EditarU.vue'
 import EditarE from '@/components/Equipos/EditarE.vue'
@@ -9,7 +8,7 @@ import InsertarE from '@/components/Equipos/InsertarE.vue'
 import ListaR from '@/components/Responsables/ListaR.vue'
 import ListaU from '@/components/Ubicaciones/ListaU.vue'
 import ListaE from '@/components/Equipos/ListaE.vue'
-import LoginGeneral from '@/components/LoginGeneral.vue'
+import LoginGeneral from '@/components/Usuarios/LoginGeneral.vue'
 
 
 
@@ -21,12 +20,6 @@ const routes = [
     meta: {
       hideNavbar: true 
     }
-  },
-
-  {
-    path: '/home',
-    name: 'home',
-    component: HomeView
   },
   {
     path: '/editarU/:id',
