@@ -12,7 +12,7 @@
         <div class="login-box">
           <div class="user-login-header">User Login</div>
           <div class="user-icon-wrapper">
-            <img src="../../Imagenes/Ubicaciones_Logo.png" alt="User Icon" class="user-icon" />
+            <img src="../../Imagenes/user_logo.png" alt="User Icon" class="user-icon" />
           </div>
           <form @submit.prevent="Login" class="login-form">
           <input type="text" placeholder="User Name" class="input-field" v-model="username" />
@@ -209,14 +209,14 @@ export default {
 }
 
 .user-icon-wrapper {
-    background-color: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente para el círculo */
+    background-color: rgba(255, 255, 255, 0); /* Fondo semi-transparente para el círculo */
     border-radius: 50%; /* Forma circular */
-    padding: 15px;
+    padding: 0px;
 }
 
 .user-icon {
-    width: 60px;
-    filter: invert(100%); /* Invierte colores para hacer el ícono blanco */
+    width: 100px; 
+    opacity: 0.5
 }
 
 .input-field {
