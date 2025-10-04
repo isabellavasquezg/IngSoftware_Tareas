@@ -9,26 +9,34 @@
             
             <!-- Logo + título -->
             <div class="text-center py-4">
-              <i class="bi bi-geo-alt-fill fs-1 text-light"></i>
-              <h4 class="text-light mt-2">Ubicaciones</h4>
+              <div class="icono-circular mx-auto mb-3">
+                <i class="bi bi-geo-alt-fill"></i>
+              </div>
+              <h2 class="titulo-sidebar">Ubicaciones</h2>
             </div>
 
             <!-- Opciones -->
-            <ul class="list-unstyled px-4">
-              <li class="mb-3">
-                <!-- ahora es un toggle que muestra el buscador -->
-                <a href="#" @click.prevent="mostrarBuscador = !mostrarBuscador" class="text-light text-decoration-none">
-                  🔍 Buscar Ubicación
-                </a>
-              </li>
-              <li class="mb-3">
-                <router-link :to="{name:'insertarU'}" class="text-light text-decoration-none">➕ Nueva Ubicación</router-link>
-              </li>
-            </ul>
+            <div class="enlaces-centrales">
+              <ul class="list-unstyled px-4">
+                <li class="mb-3 opcion-link">
+                  <a href="#" @click.prevent="mostrarBuscador = !mostrarBuscador" class="text-light text-decoration-none">Buscar Ubicación</a>
+                  <hr />
+                </li>
+                <li class="mb-3 opcion-link">
+                  <router-link :to="{name:'insertarU'}" class="text-light text-decoration-none">Nueva Ubicación</router-link>
+                  <hr />
+                </li>
+              </ul>
+            </div>
 
-            <!-- Botón inferior -->
-            <div class="text-center pb-3">
-              <router-link to="/" class="btn btn-light btn-sm">🏠 Inicio</router-link>
+            <!-- Botones inferiores -->
+            <div class="botones-inferiores d-flex justify-content-center gap-3">
+              <router-link to="/" class="btn btn-info btn-icon">
+                <i class="bi bi-house-fill"></i>
+              </router-link>
+              <router-link to="/login" class="btn btn-info btn-icon">
+                <i class="bi bi-box-arrow-right"></i>
+              </router-link>
             </div>
           </div>
         </div>
@@ -39,7 +47,7 @@
             <div class="card-header bg-secondary text-white">
               <h3 class="mb-0">Listado de Ubicaciones</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body tabla-scroll">
 
               <!-- Campo de búsqueda dinámico -->
               <div v-if="mostrarBuscador" class="mb-3">
@@ -47,7 +55,7 @@
               </div>
 
               <!-- Tabla -->
-              <div class="table-responsive">
+              <div class="table-responsive tabla-contenedor">
                 <table class="table table-bordered table-hover align-middle">
                   <thead class="table-secondary">
                     <tr>
@@ -144,15 +152,78 @@ export default {
 .sidebar {
   background-color: #557c83; /* azul/verde del mockup */
   color: white;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Ícono circular arriba del texto */
+.icono-circular {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icono-circular i {
+  font-size: 50px;
+  color: #557c83; /* color principal */
+}
+
+/* Título de sidebar más grande */
+.titulo-sidebar {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Opciones */
+.enlaces-centrales ul {
+  padding: 0;
+}
+
+.opcion-link hr {
+  border: none;
+  border-top: 1px solid beige;
+  margin: 0.3rem 0;
 }
 
 .sidebar a {
-  display: block;
-  padding: 0.5rem 0;
   color: white;
 }
 
 .sidebar a:hover {
   text-decoration: underline;
+}
+
+/* Tabla con scroll propio */
+.tabla-scroll {
+  height: calc(100vh - 150px); /* espacio fijo descontando header */
+  overflow-y: auto;
+}
+
+.tabla-contenedor {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Botones inferiores */
+.botones-inferiores {
+  padding: 15px;
+}
+
+.btn-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #5dade2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
 }
 </style>
