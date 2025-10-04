@@ -119,12 +119,54 @@ if(isset($_GET["actualizar"])){
     exit();
 }
 
-/* Mostrar todos los registros */
-$sql = mysqli_query($conexionBD,"SELECT * FROM equipos_medicos");
-if(mysqli_num_rows($sql) > 0){
-    $activos = mysqli_fetch_all($sql,MYSQLI_ASSOC);
-    echo json_encode($activos);
+$sql_query = "
+    SELECT
+        e.*,  -- Selecciona todas las columnas de la tabla equipos_medicos (e)
+        u.nombre,
+        u.ubicacion,
+        r.nombre,
+        r.apellido,
+        r.cargo
+    FROM
+        equipos_medicos e
+    JOIN
+        ubicaciones u ON e.codigoUbicacion = u.codigoAsignado
+    JOIN
+        responsables r ON e.codigoResponsable = r.codigoAsignado;
+";
+
+$sql = mysqli_query($conexionBD, $sql_query);
+
+if (mysqli_num_rows($sql) > 0) {
+    // 1. Obtener los resultados de la consulta
+    $activos_con_joins = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+    
+    // 2. Procesar los resultados para concatenar los strings como quieres
+    $activos_procesados = array_map(function($equipo) {
+        
+        // Crear el string de Ubicación
+        $equipo['ubicacion_completa'] = $equipo['nombre'] . ' - ' . $equipo['ubicacion'];
+        
+        // Crear el string del Responsable
+        $equipo['responsable_completo'] = $equipo['nombre'] . ' ' . $equipo['apellido'] . ' (' . $equipo['cargo'] . ')';
+        
+        // Opcional: Eliminar las columnas que no quieres que se vean en el frontend (solo quieres las completas)
+        unset($equipo['codigoUbicacion']);
+        unset($equipo['codigoResponsable']);
+        unset($equipo['nombre']);
+        unset($equipo['ubicacion']);
+        unset($equipo['nombre']);
+        unset($equipo['apellido']);
+        unset($equipo['cargo']);
+        
+        return $equipo;
+    }, $activos_con_joins);
+
+    echo json_encode($activos_procesados);
+    
 } else { 
-    echo json_encode([["success"=>0]]); 
+    echo json_encode([["success" => 0]]); 
 }
+
+// ... (Cierre de la conexión, etc.)
 ?>
