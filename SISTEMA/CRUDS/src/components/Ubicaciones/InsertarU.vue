@@ -97,56 +97,63 @@ export default {
 }
 .form-label {
   font-weight: bold;
-  color: #6c858a;
-  margin-bottom: 0.3rem;
+  color: #0c5b94;
+  margin-bottom: 0.1rem;
   font-size: 1.1rem;
 }
 .form-control {
   border: none;
-  border-bottom: 2px solid #6c858a;
+  border-bottom: 2px solid #0c5b94;
   outline: none;
   background: transparent;
   font-size: 1.1rem;
-  padding: 0.3rem 0;
-  color: #2c3e50;
+  padding: 0.1rem 0;
+  color: #0c5b94;
   transition: border-color 0.2s;
   border-radius: 0;
   box-shadow: none;
 }
 .form-control:focus {
-  border-bottom: 2.5px solid #3e5660;
+  border-bottom: 2.5px solid #0c5b94;
   background: transparent;
   box-shadow: none;
 }
 
 /* Botones personalizados */
 .btn-custom {
-  width: 100%;
-  border: none;
-  border-radius: 32px;
-  padding: 0.9rem 0;
-  font-size: 1.3rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  display: block;
-  transition: background 0.2s, color 0.2s;
-  text-decoration: none;
+     /* 🎯 CAMBIOS PARA REDUCIR TAMAÑO */
+    width: auto;             /* CLAVE 1: Dejar que el botón se ajuste al contenido (no 100%) */
+    padding: 0.9rem 5rem;  /* CLAVE 2: Reducir relleno vertical (0.9rem -> 0.5rem) y añadir horizontal */
+    font-size: 1rem;         /* CLAVE 3: Reducir fuente (1.3rem -> 1rem) */
+    
+    /* 🎯 CAMBIOS PARA CENTRAR */
+    margin: 0.6rem auto;       /* CLAVE 4: Centrado horizontal (0 auto) y margen inferior ajustado */
+    display: block;          /* Necesario para que margin: auto funcione */
+    
+    /* Estilos de apariencia */
+    border: none;
+    border-radius: 32px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
 }
 .btn-guardar {
-  background: #6c858a;
-  color: #fff;
+  margin-bottom: 0;
+  background: #0c5b94;
+  color: #ffffff;
 }
 .btn-guardar:hover {
-  background: #4d5e65;
+  background: #ffffff;
+  color: #0c5b94;
 }
 .btn-cancelar {
-  background: #b7c9cc;
-  color: #6c858a;
+  background: #0c5b94;
+  color: #ffffff;
 }
 .btn-cancelar:hover {
-  background: #cfd8dc;
-  color: #4d5e65;
+  background: #ffffff;
+  color: #0c5b94;
 }
 </style>

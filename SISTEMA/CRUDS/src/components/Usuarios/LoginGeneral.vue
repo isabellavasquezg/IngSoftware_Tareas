@@ -93,7 +93,7 @@ export default {
                     console.log("Login Exitoso:", data.message);
                     
                     // Redirección del navegador a la ruta de la lista (ej. Dashboard)
-                    window.location.href = '/home'; 
+                    window.location.href = '/listaE'; 
                 } else {
                     // Si el servidor indica fallo (pero con respuesta HTTP 200, 400 o 401)
                     this.errorMessage = data.message || "Usuario o contraseña incorrectos.";

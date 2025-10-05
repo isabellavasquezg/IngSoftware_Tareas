@@ -14,22 +14,58 @@
             </div>
             <!-- Opciones -->
             <div class="enlaces-centrales">
-              <ul class="list-unstyled px-4">
-                <li class="mb-3 opcion-link">
-                  <a href="#" @click.prevent="mostrarBuscador = true" class="sidebar-link">Buscar Ubicación</a>
-                  <hr />
+              <ul class="list-unstyled">
+                <li class="opcion-link">
+                  <a href="#" @click.prevent="mostrarBuscador = true" class="enlace-menu">
+                    <span>Buscar Ubicación</span>
+                  </a>
                 </li>
-                <li class="mb-3 opcion-link">
-                  <router-link :to="{name:'insertarU'}" class="sidebar-link">Nueva Ubicación</router-link>
-                  <hr />
+                
+                <li class="opcion-link">
+                  <router-link :to="{name:'insertarU'}" class="enlace-menu">
+                    <span>Nueva Ubicación</span>
+                  </router-link>
                 </li>
-              </ul>
+                <li class="opcion-link">
+                  <a href="#" @click.prevent="consultarUbicaciones" class="enlace-menu">
+                    <span>Todas las ubicaciones</span>
+                  </a>
+                </li>
+                
+                </ul>
             </div>
             <!-- Botones inferiores -->
             <div class="botones-inferiores d-flex">
-              <router-link to="/home" class="btn btn-icon active w-50 d-flex align-items-center justify-content-center">
-                <i class="bi bi-house"></i>
-              </router-link>
+                <div class="dropdown w-50 d-flex align-items-center justify-content-center menu-inferior-dropdown">
+                  <button 
+                    class="btn btn-icon d-flex align-items-center justify-content-center" 
+                    type="button" 
+                    id="menuDropdown" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false"
+                    style="width: 100%; height: 100%;"
+                  >
+                    <i class="bi bi-list"></i> 
+                  </button>
+                  
+                  <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="menuDropdown menu-desplegable">
+                    <li>
+                      <router-link :to="{ name: 'listaE' }" class="dropdown-item List-buttom-menu">
+                        <i class="bi bi-pc-display-horizontal " ></i> Equipos
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link :to="{ name: 'listaU' }" class="dropdown-item List-buttom-menu">
+                        <i class="bi bi-geo-alt "></i> Ubicaciones
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link :to="{ name: 'listaR' }" class="dropdown-item List-buttom-menu">
+                        <i class="bi bi-person-badge "></i> Responsables
+                      </router-link>
+                    </li>
+                  </ul>
+                </div>
               <router-link to="/" class="btn btn-icon w-50 d-flex align-items-center justify-content-center">
                 <i class="bi bi-power"></i>
               </router-link>
@@ -39,7 +75,7 @@
         <!-- Contenido Derecho -->
         <div class="col-md-9 d-flex flex-column p-4">
           <div class="card shadow flex-grow-1">
-            <div class="card-header bg-secondary text-white">
+            <div color="#446b9b" class="card-header text-center">
               <h3 class="mb-0">Listado de Ubicaciones</h3>
             </div>
             <div class="card-body tabla-scroll">
@@ -57,7 +93,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="ubicacion in ubicacionesFiltradas" :key="ubicacion.id">
+                    <tr v-for="ubicacion in ubicacionesFiltradas" :key="ubicacion.id" class="fila-interactiva">
                       <td>{{ ubicacion.id }}</td>
                       <td>{{ ubicacion.codigoAsignado }}</td>
                       <td>{{ ubicacion.nombre }}</td>
@@ -66,7 +102,7 @@
                       <td>
                         <div class="btn-group">
                           <router-link :to="{name:'editarU', params:{id: ubicacion.id}}" class="btn btn-warning btn-sm">Editar</router-link>
-                          <button type="button" @click="borrarUbicacion(ubicacion.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                          <button type="button" @click="borrarUbicacion(ubicacion.codigoAsignado)" class="btn btn-danger btn-sm">Eliminar</button>
                         </div>
                       </td>
                     </tr>
@@ -97,6 +133,7 @@
             />
           </div>
           <button type="submit" class="btn-buscar">Buscar</button>
+          <button type="close" @click.prevent="cerrarBuscador" class="btn-buscar">Cerrar </button>
         </form>
       </div>
     </div>
@@ -126,6 +163,7 @@ export default {
   },
   methods: {
     consultarUbicaciones() {
+    this.filtro = ""
       fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php')
         .then(res => res.json())
         .then(data => {
@@ -137,13 +175,27 @@ export default {
         })
         .catch(err => console.error('Error al cargar ubicaciones:', err))
     },
-    borrarUbicacion(id) {
-      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + id)
-        .then(res => res.json())
-        .then(() => {
-          this.consultarUbicaciones()
-        })
-        .catch(err => console.error('Error al eliminar ubicación:', err))
+    borrarUbicacion(codigoAsignado) {
+        if (!confirm("¿Estás seguro de que deseas eliminar esta ubicación?")) {
+            return;
+        }
+        console.log(codigoAsignado);
+        fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + codigoAsignado)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success === 1) {
+                    // Éxito:
+                    alert(data.message || "Ubicación eliminada correctamente.");
+                    this.consultarUbicaciones();
+                } else {
+                    // 🎯 El mensaje del error ahora contiene el número de equipos
+                    alert(data.error || "No se pudo completar la acción de eliminación.");
+                }
+            })
+            .catch(err => {
+                console.error('Error al intentar eliminar ubicación:', err);
+                alert('Error de conexión o datos. Revisa la consola.');
+            });
     },
     cerrarBuscador() {
       this.mostrarBuscador = false;
@@ -158,7 +210,7 @@ export default {
   overflow: hidden;
 }
 .sidebar {
-  background-color: #6c858a;
+  background-color: #315280;
   color: white;
   height: 100vh;
   position: relative;
@@ -177,30 +229,119 @@ export default {
 }
 .icono-circular i {
   font-size: 50px;
-  color: #6c858a;
+  color: #315280;
 }
 .titulo-sidebar {
   font-size: 1.8rem;
   font-weight: bold;
   color: #cfd8dc;
 }
+.enlaces-centrales {
+    padding: 10px 0; /* Espacio vertical para la sección de enlaces */
+}
+
 .enlaces-centrales ul {
-  padding: 0;
+    margin: 0;
+    padding: 0 15px; /* Padding horizontal de la lista */
 }
-.opcion-link hr {
-  border: none;
-  border-top: 2px solid #cfd8dc;
-  margin: 0.3rem 0;
+
+/* Elemento de la lista: Añadir separación sin la línea horizontal */
+.opcion-link {
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Línea sutil */
 }
-.sidebar-link {
-  color: #cfd8dc;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
+
+/* El enlace (router-link o a) - La clave del estilo profesional */
+.enlace-menu {
+    /* Diseño y tamaño */
+    display: flex;
+    justify-content: center; 
+    display: flex; /* Permite centrar y alinear el icono y el texto */
+    align-items: center;
+    padding: 12px 15px; /* Espacio interno generoso para un toque fácil */
+    width: 100%;
+    
+    /* Apariencia */
+    color: #ffffffff; /* Texto gris oscuro sutil */
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500; /* Ligeramente más grueso */
+    border-radius: 6px; /* Bordes suaves */
+    
+    /* Transición Profesional: Suaviza todos los efectos */
+    transition: all 0.25s ease;
 }
-.sidebar-link:hover {
-  text-decoration: underline;
+
+
+/* *** FEEDBACK VISUAL: Hover y Foco *** */
+.enlace-menu:hover,
+.enlace-menu:focus {
+    background-color: #638bb3; /* Fondo azul */
+    color: #ffffffff; /* Texto en color primario */
+    text-decoration: none;
+    outline: none; /* Elimina el borde feo de foco */
+    cursor: pointer;
+}
+.card-header {
+    /* 1. Aplicar el color de fondo */
+    background-color: #446b9b;
+    
+    /* 2. Mejorar la legibilidad del texto */
+    color: white; /* Cambia el color del texto a blanco para que contraste con el fondo oscuro */
+    text-align: center;
+    /* 3. Estilo profesional y moderno */
+    font-weight: 600; /* Hace el texto más audaz y legible */
+    font-size: 1.1rem; /* Aumenta ligeramente el tamaño de la fuente */
+    padding: 15px 20px; /* Aumenta el relleno para que se vea más espacioso */
+    border-bottom: none; /* Elimina el borde inferior estándar de Bootstrap */
+    border-radius: 0.375rem 0.375rem 0 0; /* Asegura que la parte superior de la tarjeta tenga bordes redondeados */
+    
+    /* 4. Sombra sutil (Opcional, si quieres que se "levante") */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+td {
+  text-align: left;
+}
+.table {
+    --bs-table-bg: #fff; /* Asegura un fondo blanco para las filas por defecto */
+    --bs-table-hover-bg: #e0f0ff; /* Define un hover predeterminado si no quieres el azul oscuro */
+    /* ... otros estilos de tabla de Bootstrap ... */
+}
+
+
+/* *** SOLUCIÓN CLAVE: Selector más específico para anular Bootstrap *** */
+/* Usamos el contenedor de la tabla para aumentar la especificidad */
+.table.table-hover > tbody > .fila-interactiva:hover,
+.table > tbody > .fila-interactiva:hover {
+    background-color: #073f67 !important; /* Tu color azul oscuro */
+    color: white !important; /* El texto debe ser blanco para que sea legible */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* Transición suave para todos los cambios */
+}
+
+/* También asegúrate de que los enlaces/botones dentro de la fila se vean bien */
+.table > tbody > .fila-interactiva:hover .btn,
+.table > tbody > .fila-interactiva:hover a {
+    /* Puedes ajustar el color de los botones o enlaces internos en hover si quieres */
+    /* Por ejemplo, hacerlos ligeramente más claros o de otro color para que destaquen */
+    filter: brightness(1.2); /* Aclarar los botones ligeramente */
+    color: #fff; /* Asegurar que el texto del botón se vea */
+}
+
+/* Opcional: Estilo para los iconos si los tuvieras en la fila */
+.table > tbody > .fila-interactiva:hover i {
+    color: #fff;
+}
+
+
+/* Si tienes la clase `table-hover` directamente en tu `<table>` */
+.table-hover tbody tr:hover {
+    background-color: #073f67 !important; /* Sobrescribe el hover predeterminado de Bootstrap */
+    color: white !important;
+}
+th{
+  background-color:#073f67;
+  color: #fff;
 }
 .tabla-scroll {
   height: calc(100vh - 150px);
@@ -208,7 +349,7 @@ export default {
   background: transparent;
 }
 .tabla-contenedor {
-  max-height: 60vh;
+  max-height: 80vh;
   overflow-y: auto;
 }
 .botones-inferiores {
@@ -216,32 +357,100 @@ export default {
   background: #b7c9cc;
 }
 .btn-icon {
-  width: 100%;
-  height: 50px;
-  border-radius: 0;
-  background-color: #b7c9cc;
-  border: none;
-  font-size: 1.7rem;
-  color: #6c858a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    /* Define un color de fondo base y color de texto */
+    background-color: #315280; /* Gris claro, similar al de Bootstrap */
+    color: #ffffffff; /* Texto gris oscuro */
+    border: 1px solid #dee2e6; /* Borde sutil */
+    transition: all 0.2s ease-in-out; /* Transición suave para todos los cambios */
+    /* Asegura que el botón se vea como tal */
+    padding: 10px 15px; /* Relleno adecuado */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    text-decoration: none; /* Quita el subrayado del router-link */
+    
+    /* Importante para que el efecto se vea bien */
+    box-shadow: 0 3px #adb5bd; /* Sombra sutil para darle relieve */
+    transform: translateY(0);
 }
-.btn-icon.active {
-  background-color: #6c858a;
-  color: #fff;
+
+/* 2. Efecto al pasar el ratón (Hover) */
+.btn-icon:hover {
+    background-color: #638bb3; /* Un gris ligeramente más oscuro al pasar el ratón */
+    color: #ffffffff; /* Un toque de color azul para realzar la opción */
+    cursor: pointer; /* Indica que es interactivo */
+}
+
+.botones-inferiores .dropdown-menu {
+    /* ... Tus estilos de posicionamiento (bottom, top, etc.) ... */
+    
+    background-color: #007bff; /* Fondo azul para el menú (similar al de la imagen) */
+    
+    /* 🎯 CLAVE: Eliminar el borde */
+    border: none; 
+    
+    /* 🎯 CLAVE: Establecer los bordes redondeados a cero (o personalizarlos) */
+    border-radius: 0; 
+    
+    /* Si quieres bordes redondeados solo arriba, podrías hacer: */
+    /* border-top-left-radius: 8px; */
+    /* border-top-right-radius: 8px; */
+    /* border-bottom-left-radius: 0; */
+    /* border-bottom-right-radius: 0; */
+    
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2); /* Una sombra más pronunciada para que "flote" */
+    padding: 0; /* Asegura que no haya padding interno que genere un espacio */
+    overflow: hidden; /* Corta cualquier contenido que se salga de los bordes redondeados */
+}
+
+/* Ajustes para los ítems del menú (si ahora se ven muy pegados) */
+.botones-inferiores .dropdown-item {
+    color: white; /* Color del texto para que contraste con el fondo azul */
+    background-color: #315280; /* Mismo color de fondo que el menú */
+    padding: 12px 20px; /* Relleno adecuado */
+    transition: background-color 0.2s ease;
+}
+
+.botones-inferiores .dropdown-item:hover {
+    background-color: #4472b1; /* Un azul ligeramente más oscuro al pasar el ratón */
+    color: white;
+}
+
+.botones-inferiores .dropdown-item i {
+    color: white; /* Asegura que los iconos también sean blancos */
+}
+
+/* Línea divisoria si la usas */
+.botones-inferiores .dropdown-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Divisor blanco translúcido */
+    margin: 0; /* Elimina márgenes extra */
+}
+/* 3. Efecto al presionar (Active) */
+.btn-icon:active {
+    /* Mueve el botón hacia abajo para simular que se ha presionado */
+    transform: translateY(3px); 
+    /* Elimina la sombra para simular que ha "entrando" en la superficie */
+    box-shadow: 0 0px #adb5bd;
+    /* Cambia el color si lo deseas para dar feedback */
+    background-color: #dee2e6; 
 }
 .btn-warning {
-  background: #ffc107 !important;
-  color: #222 !important;
-  border: none;
-}
-.btn-danger {
-  background: #dc3545 !important;
-  color: #fff !important;
+  background: #fafafa !important;
+  color: #073f67 !important;
   border: none;
 }
 
+.btn-danger {
+  background: #073f67 !important;
+  color: #fff !important;
+  border: none;
+}
+.btn-warning:hover {
+  background: #0d61ea !important;
+  color: #fbfbfb !important;
+}
+.btn-danger:hover {
+  background: #feffff !important;
+  color: #0d61ea !important;
+}
 /* Buscador Modal */
 .buscador-modal {
   position: fixed;
@@ -277,38 +486,38 @@ export default {
 }
 .form-label {
   font-weight: bold;
-  color: #6c858a;
+  color: #0c5b94;
   margin-bottom: 0.3rem;
   font-size: 1.1rem;
 }
 .form-control {
   border: none;
-  border-bottom: 2px solid #6c858a;
+  border-bottom: 2px solid #073f67;
   outline: none;
   background: transparent;
   font-size: 1.1rem;
   padding: 0.3rem 0;
-  color: #2c3e50;
+  color: #0c5b94;
   transition: border-color 0.2s;
   border-radius: 0;
   box-shadow: none;
 }
 .form-control:focus {
-  border-bottom: 2.5px solid #3e5660;
+  border-bottom: 2.5px solid #0c5b94;
   background: transparent;
   box-shadow: none;
 }
 .btn-buscar {
-  width: 100%;
-  background: #6c858a;
+  width: 80%;
+  background: #073f67;
   color: #fff;
   border: none;
-  border-radius: 32px;
-  padding: 0.9rem 0;
-  font-size: 1.3rem;
+  border-radius: 15px;
+  padding: 0.6rem 0;
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  margin-top: 1.2rem;
+  margin-top: 0.2rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   text-decoration: none;

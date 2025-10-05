@@ -112,26 +112,26 @@ export default {
 }
 .form-group label {
   font-weight: bold;
-  color: #6c858a;
+  color: #0c5b94;
   margin-bottom: 0.3rem;
   font-size: 1.1rem;
 }
 .form-group input {
   border: none;
-  border-bottom: 2px solid #6c858a;
+  border-bottom: 2px solid #0c5b94;
   outline: none;
   background: transparent;
   font-size: 1.1rem;
   padding: 0.3rem 0;
-  color: #2c3e50;
+  color: #0c5b94;
   transition: border-color 0.2s;
 }
 .form-group input:focus {
-  border-bottom: 2.5px solid #3e5660;
+  border-bottom: 2.5px solid #1171b7;
 }
 .btn-agregar {
   width: 100%;
-  background: #6c858a;
+  background: #0c5b94;
   color: #fff;
   border: none;
   border-radius: 22px;
@@ -144,14 +144,15 @@ export default {
   transition: background 0.2s;
 }
 .btn-agregar:hover {
-  background: #4d5e65;
+  background: #ffffff;
+  color: #0c5b94;
 }
 .btn-cancelar {
   display: block;
   width: 100%;
   text-align: center;
-  background: #b7c9cc;
-  color: #6c858a;
+  background: #0c5b94;
+  color: #ffffff;
   border-radius: 22px;
   padding: 0.6rem 0;
   font-size: 1.1rem;
@@ -161,6 +162,7 @@ export default {
   transition: background 0.2s;
 }
 .btn-cancelar:hover {
-  background: #cfd8dc;
+  background: #0c5b94;
+  color: #ffffff;
 }
 </style>

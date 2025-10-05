@@ -122,7 +122,7 @@ if(isset($_GET["actualizar"])){
 $sql_query = "
     SELECT
         e.*,  -- Selecciona todas las columnas de la tabla equipos_medicos (e)
-        u.nombre,
+        u.nombre as nombre_ubicacion,
         u.ubicacion,
         r.nombre,
         r.apellido,
@@ -145,15 +145,15 @@ if (mysqli_num_rows($sql) > 0) {
     $activos_procesados = array_map(function($equipo) {
         
         // Crear el string de Ubicación
-        $equipo['ubicacion_completa'] = $equipo['nombre'] . ' - ' . $equipo['ubicacion'];
+        $equipo['ubicacion_completa'] = $equipo['nombre_ubicacion'] . ': ' . $equipo['ubicacion'];
         
         // Crear el string del Responsable
-        $equipo['responsable_completo'] = $equipo['nombre'] . ' ' . $equipo['apellido'] . ' (' . $equipo['cargo'] . ')';
+        $equipo['responsable_completo'] = $equipo['cargo'] . ': '.$equipo['nombre'] . ' ' . $equipo['apellido'];
         
         // Opcional: Eliminar las columnas que no quieres que se vean en el frontend (solo quieres las completas)
         unset($equipo['codigoUbicacion']);
         unset($equipo['codigoResponsable']);
-        unset($equipo['nombre']);
+        unset($equipo['nombre_ubicacion']);
         unset($equipo['ubicacion']);
         unset($equipo['nombre']);
         unset($equipo['apellido']);
