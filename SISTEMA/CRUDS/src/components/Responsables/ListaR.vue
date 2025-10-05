@@ -79,3 +79,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  td {
+    text-align: left;
+  }
+  </style>

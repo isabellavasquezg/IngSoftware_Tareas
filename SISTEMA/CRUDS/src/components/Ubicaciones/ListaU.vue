@@ -139,7 +139,11 @@ export default {
 }
 </script>
 
+
 <style scoped>
+td {
+    text-align: left;
+  }
 .ubicaciones-page {
   height: 100vh;
   overflow: hidden;

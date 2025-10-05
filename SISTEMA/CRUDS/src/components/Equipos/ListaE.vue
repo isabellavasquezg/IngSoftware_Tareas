@@ -11,8 +11,8 @@
                 <th scope="col">Número Equipo</th>
                 <th scope="col">Marca</th>
                 <th scope="col">Modelo</th>
-                <th scope="col">Código Ubicación</th>
-                <th scope="col">Código Responsable</th>
+                <th scope="col">Ubicacion</th>
+                <th scope="col">Responsable</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -22,8 +22,8 @@
                 <td>{{ equipo.numeroActivo }}</td>
                 <td>{{ equipo.marca }}</td>
                 <td>{{ equipo.modelo }}</td>
-                <td>{{ equipo.codigoUbicacion }}</td>
-                <td>{{ equipo.codigoResponsable }}</td>
+                <td>{{ equipo.ubicacion_completa }}</td>
+                <td>{{ equipo.responsable_completo }}</td>
                 <td>
                   <div class="btn-group" role="group" aria-label="Grupo básico">
                     <router-link :to="{ name:'editarE', params:{ id: equipo.id } }" class="btn btn-warning">Editar</router-link>
@@ -76,5 +76,9 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+  td {
+    text-align: justify;
+  }
+</style>
 
