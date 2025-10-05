@@ -21,13 +21,30 @@
         </div>
 
         <div class="mb-3">
-          <label for="codigoUbicacion" class="form-label">Código de Ubicación</label>
-          <input type="text" required class="form-control" id="codigoUbicacion" v-model="equipo.codigoUbicacion">
+          <label for="codigoUbicacion" class="form-label">Ubicación</label>
+          <select required class="form-control" id="codigoUbicacion" v-model="equipo.codigoUbicacion">
+            <option disabled value="">Seleccione una Ubicación</option>
+            <option
+              v-for="ubicacion in ubicacionesList"
+              :key="ubicacion.codigoUbicacion"
+              :value="ubicacion.codigoUbicacion"
+            >
+              {{ ubicacion.nombre }} : {{ ubicacion.ubicacion }}
+            </option>
+          </select>
         </div>
-
         <div class="mb-3">
-          <label for="codigoResponsable" class="form-label">Código de Responsable</label>
-          <input type="text" required class="form-control" id="codigoResponsable" v-model="equipo.codigoResponsable">
+          <label for="codigoResponsable" class="form-label">Responsable</label>
+          <select required class="form-control" id="codigoResponsable" v-model="equipo.codigoResponsable">
+            <option disabled value="">Seleccione un Responsable</option>
+            <option
+              v-for="responsable in responsablesList"
+              :key="responsable.codigoResponsable"
+              :value="responsable.codigoResponsable"
+            >
+              {{ responsable.cargo }}: {{ responsable.nombre }} {{ responsable.apellido }}
+            </option>
+          </select>
         </div>
         <button type="submit" class="btn-custom btn-guardar">Guardar</button>
         <router-link to="/listaE" class="btn-custom btn-cancelar">Cancelar</router-link>
@@ -47,10 +64,31 @@ export default {
   data() {
     return {
       equipo: {
-      }
+      },
+      ubicacionesList: [], 
+      responsablesList: [],
     }
   },
   methods: {
+    async obtenerUbicaciones() {
+      try {
+        // **Reemplaza esta URL** con la de tu API que devuelve todas las ubicaciones
+        const response = await fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php'); 
+        this.ubicacionesList = await response.json();
+      } catch (error) {
+        console.error('Error al obtener ubicaciones:', error);
+      }
+    },
+    
+    async obtenerResponsables() {
+      try {
+        // **Reemplaza esta URL** con la de tu API que devuelve todos los responsables
+        const response = await fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php'); 
+        this.responsablesList = await response.json();
+      } catch (error) {
+        console.error('Error al obtener responsables:', error);
+      }
+    }, 
     agregarEquipo() {
       // 1. Prepara los datos a enviar
       let datosEnviar = {
@@ -97,7 +135,11 @@ export default {
         alert('⚠️ Error de conexión o comunicación. Revisa la consola para más detalles.')
       })
     }
-  }
+  },
+  mounted() {
+  this.obtenerUbicaciones();
+  this.obtenerResponsables();
+}
 }
 </script>
 <style scoped>
@@ -127,6 +169,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 70px;
 }
 
 .mb-3 {
@@ -158,26 +201,34 @@ export default {
 
 /* Botones personalizados */
 .btn-custom {
-     /* 🎯 CAMBIOS PARA REDUCIR TAMAÑO */
-    width: auto;             /* CLAVE 1: Dejar que el botón se ajuste al contenido (no 100%) */
-    padding: 0.9rem 5rem;  /* CLAVE 2: Reducir relleno vertical (0.9rem -> 0.5rem) y añadir horizontal */
-    font-size: 1rem;         /* CLAVE 3: Reducir fuente (1.3rem -> 1rem) */
-    
-    /* 🎯 CAMBIOS PARA CENTRAR */
-    margin: 0.6rem auto;       /* CLAVE 4: Centrado horizontal (0 auto) y margen inferior ajustado */
-    display: block;          /* Necesario para que margin: auto funcione */
-    
-    /* Estilos de apariencia */
-    border: none;
-    border-radius: 32px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    text-decoration: none;
+  /* 1. Unificar el comportamiento de display */
+  display: block; /* Hacemos que ocupe todo el ancho para un look apilado como en la imagen */
+  width: 100%;    /* Asegura que el botón se expanda a todo el ancho del contenedor */
+
+  /* 2. Dimensiones y tipografía grandes (ajustar el padding) */
+  padding: 15px 30px; /* Incrementado para hacer el botón más alto y ancho */
+  font-size: 1.25rem; /* Fuente más grande */
+  font-weight: bold;  /* Texto en negrita como en la imagen */
+  line-height: 1.5;
+
+  /* 3. Forma de Píldora */
+  border-radius: 50px; /* Valor alto para crear la forma de píldora */
+  
+  /* 4. Propiedades de enlace/botón */
+  text-decoration: none; 
+  text-align: center;
+  box-sizing: border-box; 
+  border: none; /* Quitamos el borde para un look más limpio */
+  cursor: pointer;
+  
+  /* Agregamos un pequeño margen para separarlos como en la imagen */
+  margin-bottom: 10px; 
 }
+
 .btn-guardar {
-  margin-bottom: 0;
+  padding: 15px 30px;
+  font-size: 1.25rem;
+  margin-bottom: 6px;
   background: #0c5b94;
   color: #ffffff;
 }
@@ -186,6 +237,8 @@ export default {
   color: #0c5b94;
 }
 .btn-cancelar {
+  padding: 15px 30px;
+  font-size: 1.25rem;
   background: #0c5b94;
   color: #ffffff;
 }
