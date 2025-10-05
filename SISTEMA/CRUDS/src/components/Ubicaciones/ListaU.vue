@@ -16,7 +16,7 @@
             <div class="enlaces-centrales">
               <ul class="list-unstyled px-4">
                 <li class="mb-3 opcion-link">
-                  <a href="#" @click.prevent="mostrarBuscador = !mostrarBuscador" class="sidebar-link">Buscar Ubicación</a>
+                  <a href="#" @click.prevent="mostrarBuscador = true" class="sidebar-link">Buscar Ubicación</a>
                   <hr />
                 </li>
                 <li class="mb-3 opcion-link">
@@ -43,10 +43,6 @@
               <h3 class="mb-0">Listado de Ubicaciones</h3>
             </div>
             <div class="card-body tabla-scroll">
-              <!-- Campo de búsqueda dinámico -->
-              <div v-if="mostrarBuscador" class="mb-3">
-                <input type="text" v-model="filtro" class="form-control" placeholder="Buscar por código asignado...">
-              </div>
               <!-- Tabla -->
               <div class="table-responsive tabla-contenedor">
                 <table class="table table-bordered table-hover align-middle">
@@ -83,6 +79,25 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- Buscador Modal -->
+    <div v-if="mostrarBuscador" class="buscador-modal">
+      <div class="buscador-form-container">
+        <form @submit.prevent="cerrarBuscador" class="buscador-form">
+          <div class="form-group">
+            <label for="busquedaCodigo" class="form-label">Código Asignado</label>
+            <input
+              type="text"
+              id="busquedaCodigo"
+              class="form-control"
+              v-model="filtro"
+              placeholder="Buscar por código asignado..."
+              autofocus
+            />
+          </div>
+          <button type="submit" class="btn-buscar">Buscar</button>
+        </form>
       </div>
     </div>
   </div>
@@ -129,6 +144,9 @@ export default {
           this.consultarUbicaciones()
         })
         .catch(err => console.error('Error al eliminar ubicación:', err))
+    },
+    cerrarBuscador() {
+      this.mostrarBuscador = false;
     }
   }
 }
@@ -222,5 +240,80 @@ export default {
   background: #dc3545 !important;
   color: #fff !important;
   border: none;
+}
+
+/* Buscador Modal */
+.buscador-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.buscador-form-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.buscador-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.form-label {
+  font-weight: bold;
+  color: #6c858a;
+  margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+.form-control {
+  border: none;
+  border-bottom: 2px solid #6c858a;
+  outline: none;
+  background: transparent;
+  font-size: 1.1rem;
+  padding: 0.3rem 0;
+  color: #2c3e50;
+  transition: border-color 0.2s;
+  border-radius: 0;
+  box-shadow: none;
+}
+.form-control:focus {
+  border-bottom: 2.5px solid #3e5660;
+  background: transparent;
+  box-shadow: none;
+}
+.btn-buscar {
+  width: 100%;
+  background: #6c858a;
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  padding: 0.9rem 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+.btn-buscar:hover {
+  background: #4d5e65;
 }
 </style>

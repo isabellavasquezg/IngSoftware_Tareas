@@ -49,11 +49,9 @@
                   <thead class="table-secondary">
                     <tr>
                       <th>ID</th>
-                      <th>Código Asignado</th>
-                      <th>Nombre</th>
+                      <th>Número Equipo</th>
                       <th>Marca</th>
                       <th>Modelo</th>
-                      <th>Serie</th>
                       <th>Ubicación</th>
                       <th>Responsable</th>
                       <th>Acciones</th>
@@ -62,22 +60,20 @@
                   <tbody>
                     <tr v-for="equipo in equipos" :key="equipo.id">
                       <td>{{ equipo.id }}</td>
-                      <td>{{ equipo.codigoAsignado }}</td>
-                      <td>{{ equipo.nombre }}</td>
+                      <td>{{ equipo.numeroActivo }}</td>
                       <td>{{ equipo.marca }}</td>
                       <td>{{ equipo.modelo }}</td>
-                      <td>{{ equipo.serie }}</td>
-                      <td>{{ equipo.ubicacion }}</td>
-                      <td>{{ equipo.responsable }}</td>
+                      <td>{{ equipo.ubicacion_completa }}</td>
+                      <td>{{ equipo.responsable_completo }}</td>
                       <td>
-                        <div class="btn-group">
-                          <router-link :to="{name:'editarE', params:{id: equipo.id}}" class="btn btn-warning btn-sm">Editar</router-link>
+                        <div class="btn-group" role="group" aria-label="Grupo básico">
+                          <router-link :to="{ name:'editarE', params:{ id: equipo.id } }" class="btn btn-warning btn-sm">Editar</router-link>
                           <button type="button" @click="borrarEquipo(equipo.id)" class="btn btn-danger btn-sm">Eliminar</button>
                         </div>
                       </td>
                     </tr>
                     <tr v-if="equipos.length === 0">
-                      <td colspan="9" class="text-center text-muted">No hay equipos registrados</td>
+                      <td colspan="7" class="text-center text-muted">No hay equipos registrados</td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,7 +102,11 @@ export default {
       fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php')
         .then(res => res.json())
         .then(data => {
-          this.equipos = Array.isArray(data) ? data : [];
+          if (Array.isArray(data) && typeof data[0]?.success === 'undefined') {
+            this.equipos = data
+          } else {
+            this.equipos = []
+          }
         })
         .catch(err => {
           console.error('Error al cargar equipos:', err)
@@ -200,5 +200,15 @@ export default {
 .btn-icon.active {
   background-color: #6c858a;
   color: #fff;
+}
+.btn-warning {
+  background: #ffc107 !important;
+  color: #222 !important;
+  border: none;
+}
+.btn-danger {
+  background: #dc3545 !important;
+  color: #fff !important;
+  border: none;
 }
 </style>
