@@ -88,13 +88,13 @@ if (isset($_GET['borrar'])) {
 /* Inserta un registro de una ubicación de la tabla Ubicaciones. La información es recibida en método POST */
 if (isset($_GET["insertar"])) {
     $data = json_decode(file_get_contents("php://input"));
+    
+    $codigoAsignado = mysqli_real_escape_string($conexionBD, $data->codigoAsignado ?? "");
+    $nombre = mysqli_real_escape_string($conexionBD, $data->nombre ?? "");
+    $ubicacion = mysqli_real_escape_string($conexionBD, $data->ubicacion ?? "");
+    $telefono = mysqli_real_escape_string($conexionBD, $data->telefono ?? "");
 
-    $codigoAsignado = $data->codigoAsignado ?? "";
-    $nombre = $data->nombre ?? "";
-    $ubicacion = $data->ubicacion ?? "";
-    $telefono = $data->telefono ?? "";
-
-    if ($codigoAsignado !== "" && $nombre !== "" && $ubicacion !== "" && $telefono !== "") {        
+    if ($codigoAsignado !== "" && $nombre !== "" && $ubicacion !== "" && $telefono !== "") {
         $sql = mysqli_query(
             $conexionBD,
             "INSERT INTO ubicaciones(codigoAsignado, nombre, ubicacion, telefono) 
@@ -102,12 +102,26 @@ if (isset($_GET["insertar"])) {
         );
 
         if ($sql) {
-            echo json_encode(["success" => 1]);
+            echo json_encode(["success" => 1, "message" => "Registro insertado correctamente."]);
         } else {
-            echo json_encode(["success" => 0,"error" => mysqli_error($conexionBD)]);
+            $error_numero = mysqli_errno($conexionBD);
+
+            // 🎯 Manejo del error de clave UNICA duplicada (Código 1062)
+            if ($error_numero === 1062) {
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "El código asignado **{$codigoAsignado}** ya existe. Por favor, use otro código."
+                ]);
+            } else {
+                // Otro error de BD
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error de la base de datos: " . mysqli_error($conexionBD)
+                ]);
+            }
         }
     } else {
-        echo json_encode(["success" => 0,"error" => "Datos incompletos"]);
+        echo json_encode(["success" => 0, "error" => "Datos incompletos"]);
     }
     exit();
 }
@@ -137,4 +151,3 @@ if(mysqli_num_rows($sqlubicaciones_) > 0){
     echo json_encode($ubicaciones_);
 }
 else{ echo json_encode([["success"=>0]]); }
-?>

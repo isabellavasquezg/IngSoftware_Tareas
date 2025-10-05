@@ -120,21 +120,22 @@
     <!-- Buscador Modal -->
     <div v-if="mostrarBuscador" class="buscador-modal">
       <div class="buscador-form-container">
-        <form @submit.prevent="cerrarBuscador" class="buscador-form">
-          <div class="form-group">
-            <label for="busquedaCodigo" class="form-label">Código Asignado</label>
-            <input
-              type="text"
-              id="busquedaCodigo"
-              class="form-control"
-              v-model="filtro"
-              placeholder="Buscar por código asignado..."
-              autofocus
-            />
-          </div>
-          <button type="submit" class="btn-buscar">Buscar</button>
-          <button type="close" @click.prevent="cerrarBuscador" class="btn-buscar">Cerrar </button>
-        </form>
+      <form @submit.prevent="aplicarFiltro" class="buscador-form">
+        <div class="form-group">
+          <label for="busquedaCodigo" class="form-label">Código Asignado</label>
+          <input
+            type="text"
+            id="busquedaCodigo"
+            class="form-control"
+            
+            v-model="textoBusqueda"  placeholder="Buscar por código asignado..."
+            autofocus
+          />
+        </div>
+        <button type="submit" class="btn-buscar">Buscar</button>
+        
+        <button type="button" @click.prevent="cerrarBuscador" class="btn-buscar">Cerrar </button>
+      </form>
       </div>
     </div>
   </div>
@@ -142,65 +143,93 @@
 
 <script>
 export default {
-  name: "ListaUbicaciones",
-  data() {
-    return {
-      ubicaciones: [],
-      filtro: "",
-      mostrarBuscador: false
-    }
-  },
-  created() {
-    this.consultarUbicaciones()
-  },
-  computed: {
-    ubicacionesFiltradas() {
-      if (!this.filtro) return this.ubicaciones
-      return this.ubicaciones.filter(u => 
-        u.codigoAsignado.toLowerCase().includes(this.filtro.toLowerCase())
-      )
-    }
-  },
-  methods: {
-    consultarUbicaciones() {
-    this.filtro = ""
-      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php')
-        .then(res => res.json())
-        .then(data => {
-          if (typeof data[0]?.success === 'undefined') {
-            this.ubicaciones = data
-          } else {
-            this.ubicaciones = []
-          }
-        })
-        .catch(err => console.error('Error al cargar ubicaciones:', err))
-    },
-    borrarUbicacion(codigoAsignado) {
-        if (!confirm("¿Estás seguro de que deseas eliminar esta ubicación?")) {
-            return;
+    name: "ListaUbicaciones",
+    data() {
+        return {
+            ubicaciones: [],
+            
+            // 🎯 NUEVO: Variable temporal enlazada al input del modal
+            textoBusqueda: "", 
+            
+            // 🎯 NUEVO: Variable usada para filtrar la tabla (se actualiza al hacer submit)
+            filtroActivo: "", 
+            
+            mostrarBuscador: false
         }
-        console.log(codigoAsignado);
-        fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + codigoAsignado)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success === 1) {
-                    // Éxito:
-                    alert(data.message || "Ubicación eliminada correctamente.");
-                    this.consultarUbicaciones();
-                } else {
-                    // 🎯 El mensaje del error ahora contiene el número de equipos
-                    alert(data.error || "No se pudo completar la acción de eliminación.");
-                }
-            })
-            .catch(err => {
-                console.error('Error al intentar eliminar ubicación:', err);
-                alert('Error de conexión o datos. Revisa la consola.');
-            });
     },
-    cerrarBuscador() {
-      this.mostrarBuscador = false;
+    created() {
+        this.consultarUbicaciones()
+    },
+    computed: {
+        ubicacionesFiltradas() {
+            // Usa el filtroActivo para determinar qué mostrar
+            if (!this.filtroActivo) return this.ubicaciones
+
+            return this.ubicaciones.filter(u =>
+                u.codigoAsignado.toLowerCase().includes(this.filtroActivo.toLowerCase())
+            )
+        }
+    },
+    methods: {
+        consultarUbicaciones() {
+            // Reseteamos las variables de búsqueda al cargar la lista completa
+            this.filtroActivo = ""
+            this.textoBusqueda = ""
+            
+            fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (typeof data[0]?.success === 'undefined') {
+                        this.ubicaciones = data
+                    } else {
+                        this.ubicaciones = []
+                    }
+                })
+                .catch(err => console.error('Error al cargar ubicaciones:', err))
+        },
+        
+        // 🎯 MÉTODO NUEVO: Ejecuta la búsqueda al hacer submit
+        aplicarFiltro() {
+            // 1. Aplica el texto temporal al filtro real
+            this.filtroActivo = this.textoBusqueda;
+            
+            // 2. Cierra la modal
+            this.mostrarBuscador = false;
+        },
+        
+        // El botón "Cerrar" resetea el input temporal sin aplicar el filtro
+        cerrarBuscador() {
+            // Restaura el input al valor que está actualmente filtrando la tabla
+            this.textoBusqueda = this.filtroActivo;
+            this.mostrarBuscador = false;
+        },
+        
+        borrarUbicacion(codigoAsignado) {
+            if (!confirm("¿Estás seguro de que deseas eliminar esta ubicación?")) {
+                return;
+            }
+
+            // CLAVE: Usamos codigoAsignado en la URL
+            fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?borrar=' + codigoAsignado)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success === 1) {
+                        // Éxito:
+                        alert(data.message || "Ubicación eliminada correctamente.");
+                        this.consultarUbicaciones();
+                    } else {
+                        // Error de restricción de clave foránea (con conteo de equipos)
+                        alert(data.error || "No se pudo completar la acción de eliminación.");
+                    }
+                })
+                .catch(err => {
+                    console.error('Error al intentar eliminar ubicación:', err);
+                    alert('Error de conexión o datos. Revisa la consola.');
+                });
+        },
+        
+        // ... otros métodos que puedas tener ...
     }
-  }
 }
 </script>
 

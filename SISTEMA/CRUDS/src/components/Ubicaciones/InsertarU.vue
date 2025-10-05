@@ -37,24 +37,50 @@ export default {
       ubicacion: {}
     }
   },
-  methods: {
+methods: {
     agregarUbicacion() {
-      let datosEnviar = {
-        codigoAsignado: this.ubicacion.codigoAsignado,
-        nombre: this.ubicacion.nombre,
-        ubicacion: this.ubicacion.ubicacion,
-        telefono: this.ubicacion.telefono
-      }
-      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?insertar=1', {
-        method: 'POST',
-        body: JSON.stringify(datosEnviar)
-      })
-        .then(res => res.json())
-        .then(() => {
-          this.$router.push('/listaU');
+        let datosEnviar = {
+            codigoAsignado: this.ubicacion.codigoAsignado,
+            nombre: this.ubicacion.nombre,
+            ubicacion: this.ubicacion.ubicacion,
+            telefono: this.ubicacion.telefono
+        };
+
+        fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php?insertar=1', {
+            method: 'POST',
+            body: JSON.stringify(datosEnviar)
         })
+        .then(res => {
+            // 🎯 Paso 1: Si la respuesta HTTP no es OK (ej. 500, 404), la tratamos como error aquí.
+            if (!res.ok) {
+                // Lanza un error para ir al bloque catch. Intentamos leer el texto para depurar.
+                return res.text().then(text => {
+                    console.error('Error HTTP. Respuesta del servidor:', text);
+                    throw new Error("Fallo en la comunicación con la API. Código: " + res.status);
+                });
+            }
+            // Si la respuesta es OK (200), intentamos parsear el JSON.
+            return res.json();
+        })
+        .then(data => {
+            // Paso 2: Manejamos la respuesta JSON del servidor
+            if (data.success === 1) {
+                // ÉXITO
+                alert("Ubicación registrada correctamente.");
+                this.$router.push('/listaU');
+            } else {
+                // 🎯 ERROR DE LÓGICA (Ej. código 1062)
+                alert("ERROR: " + (data.error || "No se pudo completar la operación (Error desconocido en el servidor)."));
+                this.ubicacion.codigoAsignado = '';
+            }
+        })
+        .catch(err => {
+            // Si llegamos aquí, es un error de red o el error HTTP lanzado arriba.
+            console.error('Error final al insertar ubicación:', err);
+            alert('Error de conexión. Revisa la consola para más detalles.');
+        });
     }
-  }
+}
 }
 </script>
 
