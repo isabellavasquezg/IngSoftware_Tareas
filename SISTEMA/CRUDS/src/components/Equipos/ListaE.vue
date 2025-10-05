@@ -76,5 +76,9 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+  td {
+    text-align: justify;
+  }
+</style>
 
