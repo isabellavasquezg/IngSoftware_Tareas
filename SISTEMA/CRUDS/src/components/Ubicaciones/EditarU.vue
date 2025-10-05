@@ -4,7 +4,7 @@
       <ListaU />
     </div>
     <div class="editaru-form-container">
-      <form v-on:submit.prevent="actualizarUbicacion" class="editaru-form">
+      <form v-on:submit.prevent="actualizarUbicacion">
         <div class="form-group">
           <label for="codigoAsignado">Código Asignado</label>
           <input type="text" required id="codigoAsignado" v-model="ubicacion.codigoAsignado" />

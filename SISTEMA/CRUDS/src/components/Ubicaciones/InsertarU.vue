@@ -4,7 +4,7 @@
       <ListaU />
     </div>
     <div class="editaru-form-container">
-      <form v-on:submit.prevent="agregarUbicacion" class="editaru-form">
+      <form v-on:submit.prevent="agregarUbicacion">
         <div class="mb-3">
           <label for="codigoAsignado" class="form-label">Código Asignado</label>
           <input type="text" required class="form-control" id="codigoAsignado" v-model="ubicacion.codigoAsignado">
@@ -66,7 +66,7 @@ methods: {
             // Paso 2: Manejamos la respuesta JSON del servidor
             if (data.success === 1) {
                 // ÉXITO
-                alert("Ubicación registrada correctamente.");
+                alert("✅ Ubicacion registrado correctamente.");
                 this.$router.push('/listaU');
             } else {
                 // 🎯 ERROR DE LÓGICA (Ej. código 1062)
@@ -77,7 +77,7 @@ methods: {
         .catch(err => {
             // Si llegamos aquí, es un error de red o el error HTTP lanzado arriba.
             console.error('Error final al insertar ubicación:', err);
-            alert('Error de conexión. Revisa la consola para más detalles.');
+            alert('⚠️ Error de conexión. Revisa la consola para más detalles.');
         });
     }
 }
@@ -112,12 +112,7 @@ methods: {
   flex-direction: column;
   align-items: center;
 }
-.editaru-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
+
 .mb-3 {
   margin-bottom: 1rem !important;
 }

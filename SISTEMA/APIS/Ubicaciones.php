@@ -22,6 +22,14 @@ $passwd = "";
 $nombreBaseDatos = "sgt";
 $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
 
+// Verificar la conexión de inmediato
+if ($conexionBD->connect_error) {
+    // Si la conexión falla, devuelve un JSON de error de servidor
+    header('Content-Type: application/json');
+    echo json_encode(["success" => 0, "error" => "Fallo en la conexión con la base de datos: " . $conexionBD->connect_error]);
+    exit(); // 👈 Termina el script aquí para evitar el error 500
+}
+
 // Get : obtener información, post: insertar datos , put:actualizaciones , delete:borrar.
 /* Consulta UN registro de una UBICACIÓN de la tabla ubicaciones teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["consultar"] 
@@ -38,19 +46,6 @@ if (isset($_GET["consultar"])){
 /* Consulta UN registro de una UBICACIÓN de la tabla ubicaciones teniendo como criterio de búsqueda 
    la variable 'CodigoAsignado' que viene en el $_GET["consultar"] 
    */
-
-   if (isset($_GET["consultarCodigoAsignadoU"])) {
-    $codigoAsignado= $_GET["consultarCodigoAsignadoU"];
-    $sqlUbicaciones = mysqli_query($conexionBD, "SELECT * FROM ubicaciones WHERE documento='$codigoAsignado'");
-
-    if (mysqli_num_rows($sqlUbicaciones) > 0) {
-        $paciente = mysqli_fetch_assoc($sqlUbicaciones);
-        echo json_encode($codigoAsignado);
-        exit();
-    } else {
-        echo json_encode(["success" => 0]);
-    }
-}
 
 /* Borra un registro de una UBICACIÓN de la tabla ubicaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["borrar"] 

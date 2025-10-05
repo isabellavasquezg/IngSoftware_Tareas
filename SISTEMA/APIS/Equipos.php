@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 0); 
+header('Content-Type: application/json');
 /* 
 TAKEN FORM: https://github.com/oscaruhp/empleados
 AUTHOR: Oscar Uh
@@ -20,6 +22,14 @@ $passwd = "";
 $nombreBaseDatos = "sgt";
 $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
 
+// Verificar la conexión de inmediato
+if ($conexionBD->connect_error) {
+    // Si la conexión falla, devuelve un JSON de error de servidor
+    header('Content-Type: application/json');
+    echo json_encode(["success" => 0, "error" => "Fallo en la conexión con la base de datos: " . $conexionBD->connect_error]);
+    exit(); // 👈 Termina el script aquí para evitar el error 500
+}
+
 // Get : obtener información, post: insertar datos , put:actualizaciones , delete:borrar.
 /* Consulta UN registro de una UBICACIÓN de la tabla ubicaciones teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["consultar"] 
@@ -37,19 +47,6 @@ if (isset($_GET["consultar"])){
    la variable 'CodigoAsignado' que viene en el $_GET["consultar"] 
    */
 
-   if (isset($_GET["consultarCodigoAsignadoR"])) {
-    $codigoAsignado= $_GET["consultarCodigoAsignadoR"];
-    $sqlEquipos = mysqli_query($conexionBD, "SELECT * FROM equipequipos_medicosos WHERE documento='$codigoAsignado'");
-
-    if (mysqli_num_rows($sqlEquipos) > 0) {
-        $paciente = mysqli_fetch_assoc($sqlEquipos);
-        echo json_encode($codigoAsignado);
-        exit();
-    } else {
-        echo json_encode(["success" => 0]);
-    }
-}
-
 /* Borra un registro de una UBICACIÓN de la tabla ubicaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["borrar"] 
    */
@@ -65,29 +62,48 @@ if (isset($_GET["borrar"])) {
     exit();
 }
 /* Inserta un registro de una ubicación de la tabla Ubicaciones. La información es recibida en método POST */
-if(isset($_GET["insertar"])){
+if (isset($_GET["insertar"])) {
     $data = json_decode(file_get_contents("php://input"));
 
-    $numeroActivo      = $data->numeroActivo      ?? "";
-    $marca             = $data->marca             ?? "";
-    $modelo            = $data->modelo            ?? "";
-    $codigoUbicacion   = $data->codigoUbicacion   ?? "";
-    $codigoResponsable = $data->codigoResponsable ?? "";
+    // Aplicar seguridad contra inyección SQL
+    $numeroActivo      = mysqli_real_escape_string($conexionBD, (isset($data->numeroActivo) ? $data->numeroActivo : ""));
+    $marca             = mysqli_real_escape_string($conexionBD, (isset($data->marca) ? $data->marca : ""));
+    $modelo            = mysqli_real_escape_string($conexionBD, (isset($data->modelo) ? $data->modelo : ""));
+    $codigoUbicacion   = mysqli_real_escape_string($conexionBD, (isset($data->codigoUbicacion) ? $data->codigoUbicacion : ""));
+    $codigoResponsable = mysqli_real_escape_string($conexionBD, (isset($data->codigoResponsable) ? $data->codigoResponsable : ""));
 
-    if($numeroActivo!="" && $marca!="" && $modelo!="" && $codigoUbicacion!="" && $codigoResponsable!=""){        
+    if ($numeroActivo !== "" && $marca !== "" && $modelo !== "" && $codigoUbicacion !== "" && $codigoResponsable !== "") {
+        
         $sql = mysqli_query(
             $conexionBD,
             "INSERT INTO equipos_medicos(numeroActivo, marca, modelo, codigoUbicacion, codigoResponsable) 
              VALUES('$numeroActivo','$marca','$modelo','$codigoUbicacion','$codigoResponsable')"
         );
 
-        if($sql){
-            echo json_encode(["success"=>1]);
+        if ($sql) {
+            // Éxito
+            echo json_encode(["success" => 1, "message" => "Equipo insertado correctamente."]);
         } else {
-            echo json_encode(["success"=>0, "error"=>mysqli_error($conexionBD)]);
+            // Error de la base de datos
+            $error_numero = mysqli_errno($conexionBD);
+
+            // Manejo del error de clave UNICA duplicada (Código 1062 para MySQL)
+            if ($error_numero === 1062) {
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "El número de activo **{$numeroActivo}** ya existe. Por favor, verifique el código."
+                ]);
+            } else {
+                // Otro error de BD
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error de la base de datos: " . mysqli_error($conexionBD)
+                ]);
+            }
         }
     } else {
-        echo json_encode(["success"=>0, "error"=>"Datos incompletos"]);
+        // Datos incompletos
+        echo json_encode(["success" => 0, "error" => "Error: Faltan datos obligatorios para el equipo."]);
     }
     exit();
 }
