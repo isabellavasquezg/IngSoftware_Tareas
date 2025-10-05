@@ -26,8 +26,8 @@
             <option disabled value="">Seleccione una Ubicación</option>
             <option
               v-for="ubicacion in ubicacionesList"
-              :key="ubicacion.codigoUbicacion"
-              :value="ubicacion.codigoUbicacion"
+              :key="ubicacion.codigoAsignado"
+              :value="ubicacion.codigoAsignado"
             >
               {{ ubicacion.nombre }} : {{ ubicacion.ubicacion }}
             </option>
@@ -39,8 +39,8 @@
             <option disabled value="">Seleccione un Responsable</option>
             <option
               v-for="responsable in responsablesList"
-              :key="responsable.codigoResponsable"
-              :value="responsable.codigoResponsable"
+              :key="responsable.codigoAsignado"
+              :value="responsable.codigoAsignado"
             >
               {{ responsable.cargo }}: {{ responsable.nombre }} {{ responsable.apellido }}
             </option>
@@ -64,6 +64,11 @@ export default {
   data() {
     return {
       equipo: {
+          numeroActivo: '',
+          marca: '',
+          modelo: '',
+          codigoUbicacion: '',  // <-- Solución para el SELECT de Ubicación
+          codigoResponsable: '',
       },
       ubicacionesList: [], 
       responsablesList: [],
@@ -99,6 +104,7 @@ export default {
         codigoResponsable: this.equipo.codigoResponsable
       }
       console.log(datosEnviar)
+      console.log(this.equipo.codigoResponsable)
       // 2. Ejecuta la petición FETCH con manejo de errores mejorado
       fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?insertar=1', {
         method: 'POST',
