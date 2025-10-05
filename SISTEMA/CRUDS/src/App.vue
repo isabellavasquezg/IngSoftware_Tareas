@@ -1,13 +1,13 @@
 <template>
-  <nav v-if="!isLoginPage">
+  <!-- <nav v-if="!isLoginPage">
     <router-link to="/listaU">Ver Ubicaciones</router-link>|
     <router-link to="/insertarU">Crear Ubicaciones</router-link>|
     <router-link to="/listaR">Ver Responsables</router-link>|
     <router-link to="/insertarR">Crear Responsables</router-link>|
     <router-link to="/listaE">Ver Equipos</router-link>|
-    <router-link to="/insertarE">Crear Equipos</router-link>
+    <router-link to="/insertarE">Crear Equipos</router-link>|
     <router-link to="/home">Inicio</router-link>
-  </nav>
+  </nav> -->
   <router-view/>
 </template>
 

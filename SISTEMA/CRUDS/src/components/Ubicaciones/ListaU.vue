@@ -2,11 +2,9 @@
   <div class="ubicaciones-page">
     <div class="container-fluid h-100">
       <div class="row h-100">
-        
         <!-- Sidebar Izquierdo -->
         <div class="col-md-3 d-flex flex-column p-0 sidebar">
           <div class="sidebar-content flex-grow-1 d-flex flex-column justify-content-between">
-            
             <!-- Logo + título -->
             <div class="text-center py-4">
               <div class="icono-circular mx-auto mb-3">
@@ -14,29 +12,30 @@
               </div>
               <h2 class="titulo-sidebar">Ubicaciones</h2>
             </div>
-
             <!-- Opciones -->
             <div class="enlaces-centrales">
               <ul class="list-unstyled px-4">
                 <li class="mb-3 opcion-link">
-                  <a href="#" @click.prevent="mostrarBuscador = !mostrarBuscador" class="text-light text-decoration-none">Buscar Ubicación</a>
+                  <a href="#" @click.prevent="mostrarBuscador = !mostrarBuscador" class="sidebar-link">Buscar Ubicación</a>
                   <hr />
                 </li>
                 <li class="mb-3 opcion-link">
-                  <router-link :to="{name:'insertarU'}" class="text-light text-decoration-none">Nueva Ubicación</router-link>
+                  <router-link :to="{name:'insertarU'}" class="sidebar-link">Nueva Ubicación</router-link>
                   <hr />
                 </li>
               </ul>
             </div>
-
             <!-- Botones inferiores -->
-            <div class="botones-inferiores d-flex justify-content-center gap-3">
-              <router-link to="/home" class="btn btn-info btn-icon"> <i class="bi bi-house-fill"></i></router-link>
-              <router-link to="/" class="btn btn-info btn-icon"> <i class="bi bi-box-arrow-right"></i></router-link>
+            <div class="botones-inferiores d-flex">
+              <router-link to="/home" class="btn btn-icon active w-50 d-flex align-items-center justify-content-center">
+                <i class="bi bi-house"></i>
+              </router-link>
+              <router-link to="/" class="btn btn-icon w-50 d-flex align-items-center justify-content-center">
+                <i class="bi bi-power"></i>
+              </router-link>
             </div>
           </div>
         </div>
-
         <!-- Contenido Derecho -->
         <div class="col-md-9 d-flex flex-column p-4">
           <div class="card shadow flex-grow-1">
@@ -44,12 +43,10 @@
               <h3 class="mb-0">Listado de Ubicaciones</h3>
             </div>
             <div class="card-body tabla-scroll">
-
               <!-- Campo de búsqueda dinámico -->
               <div v-if="mostrarBuscador" class="mb-3">
                 <input type="text" v-model="filtro" class="form-control" placeholder="Buscar por código asignado...">
               </div>
-
               <!-- Tabla -->
               <div class="table-responsive tabla-contenedor">
                 <table class="table table-bordered table-hover align-middle">
@@ -83,11 +80,9 @@
                   </tbody>
                 </table>
               </div>
-
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -139,18 +134,13 @@ export default {
 }
 </script>
 
-
 <style scoped>
-td {
-    text-align: left;
-  }
 .ubicaciones-page {
   height: 100vh;
   overflow: hidden;
 }
-
 .sidebar {
-  background-color: #557c83; /* azul/verde del mockup */
+  background-color: #6c858a;
   color: white;
   height: 100vh;
   position: relative;
@@ -158,72 +148,79 @@ td {
   flex-direction: column;
   justify-content: space-between;
 }
-
-/* Ícono circular arriba del texto */
 .icono-circular {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: white;
+  background-color: #cfd8dc;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .icono-circular i {
   font-size: 50px;
-  color: #557c83; /* color principal */
+  color: #6c858a;
 }
-
-/* Título de sidebar más grande */
 .titulo-sidebar {
   font-size: 1.8rem;
   font-weight: bold;
+  color: #cfd8dc;
 }
-
-/* Opciones */
 .enlaces-centrales ul {
   padding: 0;
 }
-
 .opcion-link hr {
   border: none;
-  border-top: 1px solid beige;
+  border-top: 2px solid #cfd8dc;
   margin: 0.3rem 0;
 }
-
-.sidebar a {
-  color: white;
+.sidebar-link {
+  color: #cfd8dc;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
 }
-
-.sidebar a:hover {
+.sidebar-link:hover {
   text-decoration: underline;
 }
-
-/* Tabla con scroll propio */
 .tabla-scroll {
-  height: calc(100vh - 150px); /* espacio fijo descontando header */
+  height: calc(100vh - 150px);
   overflow-y: auto;
+  background: transparent;
 }
-
 .tabla-contenedor {
   max-height: 60vh;
   overflow-y: auto;
 }
-
-/* Botones inferiores */
 .botones-inferiores {
-  padding: 15px;
+  padding: 0;
+  background: #b7c9cc;
 }
-
 .btn-icon {
-  width: 50px;
+  width: 100%;
   height: 50px;
-  border-radius: 50%;
-  background-color: #5dade2;
+  border-radius: 0;
+  background-color: #b7c9cc;
+  border: none;
+  font-size: 1.7rem;
+  color: #6c858a;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+}
+.btn-icon.active {
+  background-color: #6c858a;
+  color: #fff;
+}
+.btn-warning {
+  background: #ffc107 !important;
+  color: #222 !important;
+  border: none;
+}
+.btn-danger {
+  background: #dc3545 !important;
+  color: #fff !important;
+  border: none;
 }
 </style>

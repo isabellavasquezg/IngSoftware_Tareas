@@ -40,36 +40,40 @@
         <!-- Contenido Derecho -->
         <div class="col-md-9 d-flex flex-column p-4">
           <div class="card shadow flex-grow-1">
+            <div class="card-header bg-secondary text-white">
+              <h3 class="mb-0">Listado de Equipos</h3>
+            </div>
             <div class="card-body tabla-scroll">
               <div class="table-responsive tabla-contenedor">
-                <table class="table table-bordered align-middle">
-                  <thead style="background: #6c858a; color: #fff;">
+                <table class="table table-bordered table-hover align-middle">
+                  <thead class="table-secondary">
                     <tr>
                       <th>ID</th>
                       <th>Código Asignado</th>
-                      <th>Documento</th>
-                      <th>Identidad</th>
                       <th>Nombre</th>
-                      <th>Apellidos</th>
-                      <th>Cargo</th>
-                      <th>Teléfono</th>
-                      <th></th>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Serie</th>
+                      <th>Ubicación</th>
+                      <th>Responsable</th>
+                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="equipo in equipos" :key="equipo.id">
                       <td>{{ equipo.id }}</td>
                       <td>{{ equipo.codigoAsignado }}</td>
-                      <td>{{ equipo.documento }}</td>
-                      <td>{{ equipo.identidad }}</td>
                       <td>{{ equipo.nombre }}</td>
-                      <td>{{ equipo.apellidos }}</td>
-                      <td>{{ equipo.cargo }}</td>
-                      <td>{{ equipo.telefono }}</td>
+                      <td>{{ equipo.marca }}</td>
+                      <td>{{ equipo.modelo }}</td>
+                      <td>{{ equipo.serie }}</td>
+                      <td>{{ equipo.ubicacion }}</td>
+                      <td>{{ equipo.responsable }}</td>
                       <td>
-                        <button class="btn btn-light btn-sm rounded-circle">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </button>
+                        <div class="btn-group">
+                          <router-link :to="{name:'editarE', params:{id: equipo.id}}" class="btn btn-warning btn-sm">Editar</router-link>
+                          <button type="button" @click="borrarEquipo(equipo.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                        </div>
                       </td>
                     </tr>
                     <tr v-if="equipos.length === 0">
@@ -102,13 +106,20 @@ export default {
       fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php')
         .then(res => res.json())
         .then(data => {
-          // Si tu API devuelve un objeto con una propiedad, ajusta aquí
           this.equipos = Array.isArray(data) ? data : [];
         })
         .catch(err => {
           console.error('Error al cargar equipos:', err)
           this.equipos = [];
         })
+    },
+    borrarEquipo(id) {
+      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?borrar=' + id)
+        .then(res => res.json())
+        .then(() => {
+          this.consultarEquipos()
+        })
+        .catch(err => console.error('Error al eliminar equipo:', err))
     }
   }
 }
@@ -162,7 +173,7 @@ export default {
   text-decoration: underline;
 }
 .tabla-scroll {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 150px);
   overflow-y: auto;
   background: transparent;
 }
