@@ -31,12 +31,8 @@
 
             <!-- Botones inferiores -->
             <div class="botones-inferiores d-flex justify-content-center gap-3">
-              <router-link to="/" class="btn btn-info btn-icon">
-                <i class="bi bi-house-fill"></i>
-              </router-link>
-              <router-link to="/login" class="btn btn-info btn-icon">
-                <i class="bi bi-box-arrow-right"></i>
-              </router-link>
+              <router-link to="/home" class="btn btn-info btn-icon"> <i class="bi bi-house-fill"></i></router-link>
+              <router-link to="/" class="btn btn-info btn-icon"> <i class="bi bi-box-arrow-right"></i></router-link>
             </div>
           </div>
         </div>

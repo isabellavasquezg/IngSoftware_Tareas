@@ -9,6 +9,7 @@ import ListaR from '@/components/Responsables/ListaR.vue'
 import ListaU from '@/components/Ubicaciones/ListaU.vue'
 import ListaE from '@/components/Equipos/ListaE.vue'
 import LoginGeneral from '@/components/Usuarios/LoginGeneral.vue'
+import HomeView from '@/views/HomeView.vue'
 
 
 
@@ -65,6 +66,11 @@ const routes = [
     path: '/listaE',
     name: 'listaE',
     component: ListaE
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView
   },
 ]
 

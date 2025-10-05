@@ -6,7 +6,7 @@
     <router-link to="/insertarR">Crear Responsables</router-link>|
     <router-link to="/listaE">Ver Equipos</router-link>|
     <router-link to="/insertarE">Crear Equipos</router-link>
-
+    <router-link to="/home">Inicio</router-link>
   </nav>
   <router-view/>
 </template>
