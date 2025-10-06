@@ -33,34 +33,35 @@ if (isset($_GET["consultar"])){
         } else{  echo json_encode(["success"=>0]); }
 }
 
-/* Consulta UN registro de una UBICACIÓN de la tabla ubicaciones teniendo como criterio de búsqueda 
-   la variable 'CodigoAsignado' que viene en el $_GET["consultar"] 
-   */
-
-   if (isset($_GET["consultarCodigoAsignadoR"])) {
-    $codigoAsignado= $_GET["consultarCodigoAsignadoR"];
-    $sqlResponsables = mysqli_query($conexionBD, "SELECT * FROM responsables WHERE documento='$codigoAsignado'");
-
-    if (mysqli_num_rows($sqlResponsables) > 0) {
-        $paciente = mysqli_fetch_assoc($sqlResponsables);
-        echo json_encode($codigoAsignado);
-        exit();
-    } else {
-        echo json_encode(["success" => 0]);
-    }
-}
-
 /* Borra un registro de una UBICACIÓN de la tabla ubicaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["borrar"] 
    */
-if (isset($_GET["borrar"])) {
-    header('Content-Type: application/json; charset=utf-8'); // 👈 fuerza JSON
-    $id = intval($_GET["borrar"]);
-    $sqlResponsables = mysqli_query($conexionBD, "DELETE FROM responsables WHERE id=$id");
-    if ($sqlResponsables) {
-        echo json_encode(["success" => 1]);
+if (isset($_GET['borrar'])) {
+    $id = mysqli_real_escape_string($conexionBD, $_GET['borrar']);
+
+    // 🎯 PASO 1: Contar cuántos equipos usan esta ubicación
+    $sql_count = "SELECT COUNT(*) AS total_equipos FROM equipos_medicos WHERE codigoResponsable = '$id'";
+    $resultado_count = mysqli_query($conexionBD, $sql_count);
+    $fila_count = mysqli_fetch_assoc($resultado_count);
+    $total_equipos = $fila_count['total_equipos'];
+    
+    // Si no hay equipos asociados, procedemos con el DELETE
+    if ($total_equipos == 0) {
+        $resultado = mysqli_query($conexionBD, "DELETE FROM responsables WHERE codigoAsignado = '$id'");
+        
+        if ($resultado) {
+            echo json_encode(["success" => 1, "message" => "Ubicación eliminada correctamente."]);
+        } else {
+            // Este caso debería ser raro si el conteo fue 0
+            echo json_encode(["success" => 0, "error" => "Error desconocido al intentar eliminar la ubicación."]);
+        }
+
     } else {
-        echo json_encode(["success" => 0]);
+        // 🎯 PASO 2: Error de restricción con la cuenta exacta
+        echo json_encode([
+            "success" => 0, 
+            "error" => "No se puede eliminar esta ubicación. Hay **{$total_equipos}** equipo(s) asociado(s) que deben reasignarse o eliminarse primero."
+        ]);
     }
     exit();
 }

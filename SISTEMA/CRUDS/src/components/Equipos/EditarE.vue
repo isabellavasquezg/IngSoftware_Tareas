@@ -21,15 +21,31 @@
         </div>
 
         <div class="form-group">
-          <label for="codigoUbicacion" class="form-label">Código de Ubicación</label>
-          <input type="text" required  id="codigoUbicacion" v-model="equipo.codigoUbicacion">
+          <label for="codigoUbicacion" class="form-label">Ubicación</label>
+          <select required class="form-control" id="codigoUbicacion" v-model="equipo.codigoUbicacion">
+            <option disabled value="">Seleccione una Ubicación</option>
+            <option
+              v-for="ubicacion in ubicacionesList"
+              :key="ubicacion.codigoAsignado"
+              :value="ubicacion.codigoAsignado"
+            >
+              {{ ubicacion.nombre }} : {{ ubicacion.ubicacion }}
+            </option>
+          </select>
         </div>
-
         <div class="form-group">
-          <label for="codigoResponsable" class="form-label">Código de Responsable</label>
-          <input type="text" required  id="codigoResponsable" v-model="equipo.codigoResponsable">
+          <label for="codigoResponsable" class="form-label">Responsable</label>
+          <select required class="form-control" id="codigoResponsable" v-model="equipo.codigoResponsable">
+            <option disabled value="">Seleccione un Responsable</option>
+            <option
+              v-for="responsable in responsablesList"
+              :key="responsable.codigoAsignado"
+              :value="responsable.codigoAsignado"
+            >
+              {{ responsable.cargo }}: {{ responsable.nombre }} {{ responsable.apellido }}
+            </option>
+          </select>
         </div>
-
         <button type="submit" class="btn-agregar">Guardar</button>
         <router-link to="/listaE" class="btn-cancelar">Cancelar</router-link>
       </form>
@@ -44,13 +60,34 @@ export default {
   data() {
     return {
       equipo: {
-      }
+      },
+      ubicacionesList: [], 
+      responsablesList: [],
     }
   },
   created() {
     this.obtenerEquipo()
   },
   methods: {
+    async obtenerUbicaciones() {
+      try {
+        // **Reemplaza esta URL** con la de tu API que devuelve todas las ubicaciones
+        const response = await fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Ubicaciones.php'); 
+        this.ubicacionesList = await response.json();
+      } catch (error) {
+        console.error('Error al obtener ubicaciones:', error);
+      }
+    },
+    
+    async obtenerResponsables() {
+      try {
+        // **Reemplaza esta URL** con la de tu API que devuelve todos los responsables
+        const response = await fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php'); 
+        this.responsablesList = await response.json();
+      } catch (error) {
+        console.error('Error al obtener responsables:', error);
+      }
+    }, 
     obtenerEquipo() {
       let idEquipo = this.$route.params.id
       fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?consultar=' + idEquipo)
@@ -81,7 +118,11 @@ export default {
           window.location.href = '../listaE'
         })
     }
-  }
+  },
+  mounted() {
+  this.obtenerUbicaciones();
+  this.obtenerResponsables();
+}
 }
 </script>
 <style scoped>
@@ -112,6 +153,9 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
 .editare-form {
   width: 100%;
   display: flex;
@@ -128,6 +172,16 @@ export default {
   color: #0c5b94;
   margin-bottom: 0.3rem;
   font-size: 1.1rem;
+}
+.form-control{
+  border: none;
+  border-bottom: 2px solid #0c5b94;
+  outline: none;
+  background: transparent;
+  font-size: 1.1rem;
+  padding: 0.3rem 0;
+  color: #0c5b94;
+  transition: border-color 0.2s;
 }
 .form-group input {
   border: none;

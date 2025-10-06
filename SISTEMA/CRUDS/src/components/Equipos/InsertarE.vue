@@ -138,7 +138,7 @@ export default {
       .catch(err => {
         // Manejo de error de red o error HTTP/parsing
         console.error('Error final al insertar equipo:', err)
-        alert('⚠️ Error de conexión o comunicación. Revisa la consola para más detalles.')
+        alert('⚠️ Equipo ya existente')
       })
     }
   },
