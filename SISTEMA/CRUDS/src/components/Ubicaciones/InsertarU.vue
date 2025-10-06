@@ -82,7 +82,7 @@ methods: {
         .catch(err => {
             // Si llegamos aquí, es un error de red o el error HTTP lanzado arriba.
             console.error('Error final al insertar ubicación:', err);
-            alert('⚠️ Error de conexión. Revisa la consola para más detalles.');
+            alert('⚠️ Error la ubicacion ya existe.');
         });
     }
 }

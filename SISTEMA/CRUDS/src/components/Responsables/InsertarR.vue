@@ -94,7 +94,7 @@
         .catch(err => {
           // Si llegamos aquí, es un error de red o el error HTTP lanzado arriba.
           console.error('Error final al insertar responsable:', err);
-          alert('⚠️ Error de conexión. Revisa la consola para más detalles.');
+          alert('⚠️ error el responsable ya existe en la base de datos');
         });
       }
     }
