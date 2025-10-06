@@ -99,25 +99,61 @@ export default {
         .catch(err => console.error(err))
     },
     actualizarEquipo() {
-      let datosEnviar = {
+    // 1. Prepara los datos a enviar
+    let datosEnviar = {
         id: this.equipo.id,
         numeroActivo: this.equipo.numeroActivo,
         marca: this.equipo.marca,
         modelo: this.equipo.modelo,
         codigoUbicacion: this.equipo.codigoUbicacion,
         codigoResponsable: this.equipo.codigoResponsable
-      }
+    }
 
-      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?actualizar=1', {
+    // 2. Ejecuta la petición FETCH con manejo de errores mejorado
+    fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Equipos.php?actualizar=1', {
         method: 'POST',
         body: JSON.stringify(datosEnviar)
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data)
-          window.location.href = '../listaE'
-        })
-    }
+    })
+    .then(res => {
+        // PASO 1: Validar si la respuesta HTTP es exitosa (código 200-299)
+        if (!res.ok) {
+            // Si hay un error HTTP, registramos y lanzamos un error
+            return res.text().then(text => {
+                console.error('Error HTTP. Respuesta del servidor:', text);
+                throw new Error("Fallo en la comunicación con la API. Código: " + res.status);
+            });
+        }
+        // Si es OK, intentamos parsear el JSON
+        return res.json();
+    })
+    .then(data => {
+        // PASO 2: Manejamos la respuesta JSON (éxito o error de lógica de la BD)
+        console.log(data); // Para debug
+
+        if (data.success === 1) {
+            // ÉXITO
+            alert("✅ Equipo actualizado correctamente.");
+            // Enrutamos/Redirigimos
+            this.$router.push('/listaE'); 
+            // Alternativa si usas redirección pura: window.location.href = '../listaE'
+
+        } else {
+            // ERROR DE LÓGICA (Ej. ID no encontrado, clave única duplicada, campos faltantes)
+            const errorMessage = data.error || "No se pudo completar la actualización (Error desconocido en el servidor).";
+            alert("❌ ERROR al actualizar: " + errorMessage);
+            
+            // Opcional: limpiar el campo duplicado para que el usuario lo corrija
+            if (errorMessage.includes('ya existe') && errorMessage.includes(this.equipo.numeroActivo)) {
+                 this.equipo.numeroActivo = ''; // Limpia solo el campo que causó el conflicto
+            }
+        }
+    })
+    .catch(err => {
+        // Manejo de error de red (no se pudo conectar) o error HTTP/parsing
+        console.error('Error final al actualizar equipo:', err);
+        alert('⚠️ El Equipo con este codigo ya existe no puede haber dos equipos con el mismo codigo');
+    });
+  }
   },
   mounted() {
   this.obtenerUbicaciones();

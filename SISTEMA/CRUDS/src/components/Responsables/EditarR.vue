@@ -65,8 +65,8 @@ export default {
         })
         .catch(err => { console.error(err); });
     },
-    actualizarResponsable() {
-      let datosEnviar = {
+  actualizarResponsable() {
+    let datosEnviar = {
         id: this.responsable.id,
         codigoAsignado: this.responsable.codigoAsignado,
         documentoIdentidad: this.responsable.documentoIdentidad,
@@ -74,17 +74,44 @@ export default {
         apellido: this.responsable.apellido,
         cargo: this.responsable.cargo,
         telefono: this.responsable.telefono
-      };
-      fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?actualizar=1', {
+    };
+
+    fetch('http://localhost/sgt/IngSoftware_Tareas/SISTEMA/APIS/Responsables.php?actualizar=1', {
         method: 'POST',
         body: JSON.stringify(datosEnviar)
-      })
-        .then(res => res.json())
-        .then(() => {
-          this.$router.push('/listaR');
-        })
-        .catch(err => { console.error(err); });
-    }
+    })
+    .then(res => {
+        // PASO 1: Validar si la respuesta HTTP es exitosa (código 200-299)
+        if (!res.ok) {
+            return res.text().then(text => {
+                console.error('Error HTTP. Respuesta del servidor:', text);
+                throw new Error("Fallo en la comunicación con la API. Código: " + res.status);
+            });
+        }
+        // Si es OK, intentamos parsear el JSON
+        return res.json();
+    })
+    .then(data => {
+        // PASO 2: Manejamos la respuesta JSON (éxito o error de lógica)
+        console.log("Respuesta del servidor:", data);
+
+        if (data.success === 1) {
+            // ÉXITO
+            alert("✅ Responsable actualizado correctamente.");
+            this.$router.push('/listaR'); 
+
+        } else {
+            // ERROR DE LÓGICA (Ej. campos faltantes o error de BD)
+            const errorMessage = data.error || "No se pudo completar la operación (Error desconocido en el servidor).";
+            alert("❌ ERROR al actualizar: " + errorMessage);
+        }
+    })
+    .catch(err => {
+        // Manejo de error de red o error HTTP/parsing
+        console.error('Error final al actualizar responsable:', err);
+        alert('⚠️ error el responsable ya existe en la base de datos');
+    });
+  }
   }
 }
 </script>

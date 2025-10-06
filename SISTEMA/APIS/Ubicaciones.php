@@ -125,16 +125,59 @@ if (isset($_GET["insertar"])) {
 /* Actualiza todos los campos de la tabla ubiaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["actualizar"]
    */
-if(isset($_GET["actualizar"])){ 
+if (isset($_GET["actualizar"])) {
     $data = json_decode(file_get_contents("php://input"));
-    $id=(isset($data->id))?$data->id:$_GET["actualizar"];
-    $codigoAsignado=$data->codigoAsignado;
-    $nombre=$data->nombre;
-    $ubicacion=$data->ubicacion; 
-    $telefono=$data->telefono; 
-	$sqlUbicaciones = mysqli_query($conexionBD,"UPDATE ubicaciones SET  codigoAsignado='$codigoAsignado',nombre='$nombre',ubicacion='$ubicacion', telefono='$telefono' WHERE id='$id'");
-	echo json_encode(["success"=>1]);
-	exit();   
+
+    // 1. Determinar y sanear el ID
+    // El ID puede venir en el cuerpo (data->id) o en la URL (GET["actualizar"])
+    $id = (isset($data->id) && $data->id !== "") ? $data->id : (isset($_GET["actualizar"]) ? $_GET["actualizar"] : "");
+    $id = mysqli_real_escape_string($conexionBD, $id); // Sanear el ID
+
+    // 2. Aplicar seguridad contra inyección SQL y verificar la existencia de los datos
+    $codigoAsignado = mysqli_real_escape_string($conexionBD, (isset($data->codigoAsignado) ? $data->codigoAsignado : ""));
+    $nombre         = mysqli_real_escape_string($conexionBD, (isset($data->nombre) ? $data->nombre : ""));
+    $ubicacion      = mysqli_real_escape_string($conexionBD, (isset($data->ubicacion) ? $data->ubicacion : ""));
+    $telefono       = mysqli_real_escape_string($conexionBD, (isset($data->telefono) ? $data->telefono : ""));
+    
+    // 3. Validar que el ID y todos los campos obligatorios estén presentes
+    if ($id !== "" && $codigoAsignado !== "" && $nombre !== "" && $ubicacion !== "" && $telefono !== "") {
+        
+        $sqlUbicaciones = mysqli_query(
+            $conexionBD,
+            "UPDATE ubicaciones 
+             SET codigoAsignado='$codigoAsignado', 
+                 nombre='$nombre', 
+                 ubicacion='$ubicacion', 
+                 telefono='$telefono' 
+             WHERE id='$id'"
+        );
+
+        if ($sqlUbicaciones) {
+            // Éxito en la actualización
+            echo json_encode(["success" => 1, "message" => "Ubicación actualizada correctamente."]);
+        } else {
+            // Manejo de errores de la base de datos
+            $error_numero = mysqli_errno($conexionBD);
+
+            // Manejo del error de clave UNICA duplicada (Código 1062 para MySQL)
+            if ($error_numero === 1062) {
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error: El Código Asignado **{$codigoAsignado}** ya existe en otra ubicación."
+                ]);
+            } else {
+                // Otro error de BD
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error de la base de datos: " . mysqli_error($conexionBD)
+                ]);
+            }
+        }
+    } else {
+        // Datos incompletos
+        echo json_encode(["success" => 0, "error" => "Error: Faltan datos obligatorios o el ID de registro para actualizar."]);
+    }
+    exit();
 }
 
 /*

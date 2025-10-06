@@ -95,21 +95,64 @@ if(isset($_GET["insertar"])){
 /* Actualiza todos los campos de la tabla ubiaciones, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["actualizar"]
    */
-if(isset($_GET["actualizar"])){ 
+if (isset($_GET["actualizar"])) {
     $data = json_decode(file_get_contents("php://input"));
-    $id=(isset($data->id))?$data->id:$_GET["actualizar"];
-    $codigoAsignado=$data->codigoAsignado;
-    $documentoIdentidad=$data->documentoIdentidad;
-    $nombre=$data->nombre;
-    $apellido=$data->apellido; 
-    $cargo=$data->cargo;
-    $telefono=$data->telefono; 
-	$sqlResponsables = mysqli_query($conexionBD,"UPDATE responsables SET  codigoAsignado='$codigoAsignado',documentoIdentidad='$documentoIdentidad',nombre='$nombre',apellido='$apellido',cargo='$cargo' ,telefono='$telefono' WHERE id='$id'");
-	echo json_encode(["success"=>1 ]);
-	exit();
-    
-}
 
+    // 1. Determinar y sanear el ID
+    // El ID puede venir en el cuerpo (data->id) o en la URL (GET["actualizar"])
+    $id = (isset($data->id) && $data->id !== "") ? $data->id : (isset($_GET["actualizar"]) ? $_GET["actualizar"] : "");
+    $id = mysqli_real_escape_string($conexionBD, $id); // Sanear el ID también
+
+    // 2. Aplicar seguridad contra inyección SQL y verificar la existencia de los datos
+    $codigoAsignado   = mysqli_real_escape_string($conexionBD, (isset($data->codigoAsignado) ? $data->codigoAsignado : ""));
+    $documentoIdentidad = mysqli_real_escape_string($conexionBD, (isset($data->documentoIdentidad) ? $data->documentoIdentidad : ""));
+    $nombre           = mysqli_real_escape_string($conexionBD, (isset($data->nombre) ? $data->nombre : ""));
+    $apellido         = mysqli_real_escape_string($conexionBD, (isset($data->apellido) ? $data->apellido : ""));
+    $cargo            = mysqli_real_escape_string($conexionBD, (isset($data->cargo) ? $data->cargo : ""));
+    $telefono         = mysqli_real_escape_string($conexionBD, (isset($data->telefono) ? $data->telefono : ""));
+    
+    // 3. Validar que el ID y todos los campos obligatorios estén presentes
+    if ($id !== "" && $codigoAsignado !== "" && $documentoIdentidad !== "" && $nombre !== "" && $apellido !== "" && $cargo !== "" && $telefono !== "") {
+        
+        $sqlResponsables = mysqli_query(
+            $conexionBD,
+            "UPDATE responsables 
+             SET codigoAsignado='$codigoAsignado', 
+                 documentoIdentidad='$documentoIdentidad', 
+                 nombre='$nombre', 
+                 apellido='$apellido', 
+                 cargo='$cargo', 
+                 telefono='$telefono' 
+             WHERE id='$id'"
+        );
+
+        if ($sqlResponsables) {
+            // Éxito en la actualización
+            echo json_encode(["success" => 1, "message" => "Responsable actualizado correctamente."]);
+        } else {
+            // Manejo de errores de la base de datos
+            $error_numero = mysqli_errno($conexionBD);
+
+            // Manejo del error de clave UNICA duplicada (Código 1062 para MySQL)
+            if ($error_numero === 1062) {
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error: El Código Asignado o el Documento de Identidad ya existen en otro registro."
+                ]);
+            } else {
+                // Otro error de BD
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error de la base de datos: " . mysqli_error($conexionBD)
+                ]);
+            }
+        }
+    } else {
+        // Datos incompletos
+        echo json_encode(["success" => 0, "error" => "Error: Faltan datos obligatorios o el ID de registro para actualizar."]);
+    }
+    exit();
+}
 /*
 	Muestra todos los registros almacenados en la tabla ubucaciones, usando la URL raíz.
 */

@@ -109,28 +109,55 @@ if (isset($_GET["insertar"])) {
 }
 
 /* Actualizar un registro existente */
-if(isset($_GET["actualizar"])){ 
+if (isset($_GET["actualizar"])) {
+    // Decodificar los datos JSON
     $data = json_decode(file_get_contents("php://input"));
-    $id = isset($data->id) ? $data->id : $_GET["actualizar"];
 
-    $numeroActivo      = $data->numeroActivo;
-    $marca             = $data->marca;
-    $modelo            = $data->modelo; 
-    $codigoUbicacion   = $data->codigoUbicacion;
-    $codigoResponsable = $data->codigoResponsable;
+    // Determinar el ID: puede venir en el cuerpo (data) o en la URL (GET)
+    $id = (isset($data->id) && $data->id !== "") ? $data->id : (isset($_GET["actualizar"]) ? $_GET["actualizar"] : "");
 
-    $sql = mysqli_query(
-        $conexionBD,
-        "UPDATE equipos_medicos 
-         SET numeroActivo='$numeroActivo', marca='$marca', modelo='$modelo', 
-             codigoUbicacion='$codigoUbicacion', codigoResponsable='$codigoResponsable' 
-         WHERE id='$id'"
-    );
+    // Aplicar seguridad contra inyección SQL y verificar existencia de datos
+    $numeroActivo      = mysqli_real_escape_string($conexionBD, (isset($data->numeroActivo) ? $data->numeroActivo : ""));
+    $marca             = mysqli_real_escape_string($conexionBD, (isset($data->marca) ? $data->marca : ""));
+    $modelo            = mysqli_real_escape_string($conexionBD, (isset($data->modelo) ? $data->modelo : ""));
+    $codigoUbicacion   = mysqli_real_escape_string($conexionBD, (isset($data->codigoUbicacion) ? $data->codigoUbicacion : ""));
+    $codigoResponsable = mysqli_real_escape_string($conexionBD, (isset($data->codigoResponsable) ? $data->codigoResponsable : ""));
 
-    if($sql){
-        echo json_encode(["success"=>1]);
+    // Validar que el ID y todos los campos obligatorios estén presentes
+    if ($id !== "" && $numeroActivo !== "" && $marca !== "" && $modelo !== "" && $codigoUbicacion !== "" && $codigoResponsable !== "") {
+        
+        $sql = mysqli_query(
+            $conexionBD,
+            "UPDATE equipos_medicos 
+             SET numeroActivo='$numeroActivo', marca='$marca', modelo='$modelo', 
+                 codigoUbicacion='$codigoUbicacion', codigoResponsable='$codigoResponsable' 
+             WHERE id='$id'"
+        );
+
+        if ($sql) {
+            // Éxito
+            echo json_encode(["success" => 1, "message" => "Equipo actualizado correctamente."]);
+        } else {
+            // Error de la base de datos
+            $error_numero = mysqli_errno($conexionBD);
+
+            // Manejo del error de clave UNICA duplicada (Código 1062 para MySQL)
+            if ($error_numero === 1062) {
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "El número de activo **{$numeroActivo}** ya existe en otro registro. Por favor, verifique el código."
+                ]);
+            } else {
+                // Otro error de BD
+                echo json_encode([
+                    "success" => 0,
+                    "error" => "Error de la base de datos: " . mysqli_error($conexionBD)
+                ]);
+            }
+        }
     } else {
-        echo json_encode(["success"=>0, "error"=>mysqli_error($conexionBD)]);
+        // Datos incompletos
+        echo json_encode(["success" => 0, "error" => "Error: Faltan datos obligatorios o el ID de registro para actualizar."]);
     }
     exit();
 }
