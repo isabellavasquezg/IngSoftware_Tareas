@@ -3,24 +3,29 @@
     <div class="background-blur">
       <ListaU />
     </div>
+    
     <div class="editaru-form-container">
       <form v-on:submit.prevent="agregarUbicacion">
         <div class="mb-3">
           <label for="codigoAsignado" class="form-label">Código Asignado</label>
           <input type="text" required class="form-control" id="codigoAsignado" v-model="ubicacion.codigoAsignado">
         </div>
+
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
           <input type="text" required class="form-control" id="nombre" v-model="ubicacion.nombre">
         </div>
+
         <div class="mb-3">
           <label for="ubicacion" class="form-label">Ubicación</label>
           <input type="text" required class="form-control" id="ubicacion" v-model="ubicacion.ubicacion">
         </div>
+
         <div class="mb-3">
           <label for="telefono" class="form-label">Teléfono</label>
           <input type="tel" required class="form-control" id="telefono" v-model="ubicacion.telefono">
         </div>
+
         <button type="submit" class="btn-custom btn-guardar">Guardar</button>
         <router-link to="/listaU" class="btn-custom btn-cancelar">Cancelar</router-link>
       </form>
